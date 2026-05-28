@@ -1,0 +1,14 @@
+<h2>Employee Registration form</h2>
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+  <input type="text" placeholder="Name" formControlName="name" />
+<br><br>
+  <input type="email" placeholder="Email" formControlName="email">
+  <br><br>
+  <input type="text" placeholder="PhoneNumber" formControlName="phone">
+  <br><br>
+  <input type="text" placeholder="Designation" formControlName="designation">
+  <br><br>
+  <input type="number" placeholder="Salary" formControlName="salary">
+  <br><br>
+  <button type="submit">Add Employee</button>
+</form>
