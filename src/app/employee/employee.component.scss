@@ -6,11 +6,15 @@ form {
 small {
   color: #ff0000;
   font-size: 12px;
-} 
-button{
-    color:#000000;
-    background-color: #0000ff; 
+}
+button {
+  color: #000000;
+  background-color: #0000ff;
+  margin-right: 10px;
 }
 button:hover {
   background-color: #005d8b;
+}
+.edit-btn {
+  margin-right: 10px;
 }
