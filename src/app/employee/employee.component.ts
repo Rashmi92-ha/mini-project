@@ -27,11 +27,19 @@ export class EmployeeComponent {
   });
   successMessage: any;
   employeeList: Employee[] = [];
+  editIndex: number | null = null;
 
   onSubmit() {
     if (this.employeeForm.valid) {
-      this.employeeList.push(this.employeeForm.value as unknown as Employee);
-      this.successMessage = alert('Employee added successfully ✅');
+      const employeeData = this.employeeForm.value as unknown as Employee;
+      if (this.editIndex !== null) {
+        this.employeeList[this.editIndex] = employeeData;
+        this.successMessage = alert('Employee updated successfully ✅');
+        this.editIndex = null;
+      } else {
+        this.employeeList.push(employeeData);
+        this.successMessage = alert('Employee added successfully ✅');
+      } 
       this.employeeForm.reset();
     }
   }
@@ -45,7 +53,18 @@ export class EmployeeComponent {
     return !!this.employeeForm.get(fieldName)?.hasError(errorName);
   }
 
-  isDeleteEmplyoee(index: number){
-    this.employeeList.splice(index,1);
+  isDeleteEmplyoee(index: number) {
+    this.employeeList.splice(index, 1);
+  }
+
+  editEmployee(employee: Employee, index: number) {
+    this.editIndex = index;
+    this.employeeForm.patchValue({
+      name: employee.name,
+      email: employee.email,
+      phone: employee.phone,
+      designation: employee.designation,
+      salary: employee.salary.toString(),
+    });
   }
 }

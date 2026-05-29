@@ -62,6 +62,7 @@
     {{ employee.designation }}
     |
     {{ employee.salary }}
+    <button class="edit-btn" (click)="editEmployee(employee, i)">Edit</button>
     <button (click)="isDeleteEmplyoee(i)">Delete</button>
   </li>
 </ul>
