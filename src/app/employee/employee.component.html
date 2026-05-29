@@ -1,14 +1,67 @@
 <h2>Employee Registration form</h2>
 <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="Name" formControlName="name" />
-<br><br>
-  <input type="email" placeholder="Email" formControlName="email">
-  <br><br>
-  <input type="text" placeholder="PhoneNumber" formControlName="phone">
-  <br><br>
-  <input type="text" placeholder="Designation" formControlName="designation">
-  <br><br>
-  <input type="number" placeholder="Salary" formControlName="salary">
-  <br><br>
-  <button type="submit">Add Employee</button>
+  <div class="field">
+    <input type="text" placeholder="Name" formControlName="name" />
+    <small *ngIf="isFieldInvalid('name') && hasError('name', 'required')">
+      Name is required
+    </small>
+  </div>
+
+  <div class="field">
+    <input type="email" placeholder="Email" formControlName="email" />
+    <small *ngIf="isFieldInvalid('email') && hasError('email', 'required')">
+      Email is required
+    </small>
+    <small *ngIf="isFieldInvalid('email') && hasError('email', 'email')">
+      Invalid email format
+    </small>
+  </div>
+
+  <div class="field">
+    <input type="text" placeholder="PhoneNumber" formControlName="phone" />
+    <small *ngIf="isFieldInvalid('phone') && hasError('phone', 'required')">
+      Phone number is required
+    </small>
+    <small *ngIf="isFieldInvalid('phone') && hasError('phone', 'pattern')">
+      Phone must contain 10 digits
+    </small>
+  </div>
+  <div class="field">
+    <input
+      type="text"
+      placeholder="Designation"
+      formControlName="designation"
+    />
+    <small
+      *ngIf="
+        isFieldInvalid('designation') && hasError('designation', 'required')
+      "
+    >
+      designation is required
+    </small>
+  </div>
+  <div class="field">
+    <input type="number" placeholder="Salary" formControlName="salary" />
+    <small *ngIf="isFieldInvalid('salary') && hasError('salary', 'required')">
+      salary is required
+    </small>
+  </div>
+  <div class="button">
+    <button type="submit" [disabled]="employeeForm.invalid">
+      Add Employee
+    </button>
+  </div>
 </form>
+<p>{{ successMessage }}</p>
+
+<h2>Employee List</h2>
+<ul>
+  <li *ngFor="let employee of employeeList; let i = index">
+    {{ employee.name }}
+    |
+    {{ employee.designation }}
+    |
+    {{ employee.salary }}
+    <button (click)="isDeleteEmplyoee(i)">Delete</button>
+  </li>
+</ul>

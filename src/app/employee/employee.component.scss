@@ -1,0 +1,16 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+small {
+  color: #ff0000;
+  font-size: 12px;
+} 
+button{
+    color:#000000;
+    background-color: #0000ff; 
+}
+button:hover {
+  background-color: #005d8b;
+}
