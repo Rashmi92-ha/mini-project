@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Employee } from '../models/employee';
+import { EmployeeService } from '../services/employee.service';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -15,6 +16,8 @@ import { Employee } from '../models/employee';
   styleUrl: './employee.component.scss',
 })
 export class EmployeeComponent {
+  constructor(private employeeService: EmployeeService) {}
+
   employeeForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -29,6 +32,10 @@ export class EmployeeComponent {
   employeeList: Employee[] = [];
   editIndex: number | null = null;
 
+  ngOnInit() {
+    this.loadEmployess();
+  }
+
   onSubmit() {
     if (this.employeeForm.valid) {
       const employeeData = this.employeeForm.value as unknown as Employee;
@@ -37,10 +44,14 @@ export class EmployeeComponent {
         this.successMessage = alert('Employee updated successfully ✅');
         this.editIndex = null;
       } else {
-        this.employeeList.push(employeeData);
-        this.successMessage = alert('Employee added successfully ✅');
-      } 
-      this.employeeForm.reset();
+        this.employeeService.addEmployee(employeeData).subscribe({
+          next: (response) => {
+            this.employeeList.push(response);
+            this.successMessage = alert('Employee added successfully ✅');
+              this.employeeForm.reset();
+          },
+        });
+      }
     }
   }
 
@@ -65,6 +76,14 @@ export class EmployeeComponent {
       phone: employee.phone,
       designation: employee.designation,
       salary: employee.salary.toString(),
+    });
+  }
+
+  loadEmployess() {
+    this.employeeService.getEmployee().subscribe({
+      next: (data: Employee[]) => {
+        this.employeeList = data;
+      },
     });
   }
 }
