@@ -21,4 +21,10 @@ export class EmployeeService {
       employee,
     );
   }
+
+  getEmployeeById(id: string): Observable<Employee> {
+    return this.httpClient.get<Employee>(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+    );
+  }
 }

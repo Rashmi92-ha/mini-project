@@ -8,10 +8,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { Employee } from '../models/employee';
 import { EmployeeService } from '../services/employee.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-employee',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
 })
