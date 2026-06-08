@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
-  imports: [],
+  imports: [UpperCasePipe],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })
