@@ -34,23 +34,40 @@ export class EmployeeComponent {
   editIndex: number | null = null;
 
   ngOnInit() {
-    this.loadEmployess();
+    this.loadEmployees();
   }
 
   onSubmit() {
     if (this.employeeForm.valid) {
-      const employeeData = this.employeeForm.value as unknown as Employee;
+      const formValue = this.employeeForm.value;
+
+      const employeeData: Employee = {
+        id: this.editIndex !== null ? this.employeeList[this.editIndex].id : 0,
+        name: formValue.name ?? '',
+        email: formValue.email ?? '',
+        phone: formValue.phone ?? '',
+        designation: formValue.designation ?? '',
+        salary: formValue.salary ?? 0,
+      };
+
       if (this.editIndex !== null) {
-        this.employeeList[this.editIndex] = employeeData;
-        this.successMessage = alert('Employee updated successfully ✅');
-        this.editIndex = null;
+        this.employeeService.updateEmployee(employeeData).subscribe({
+          next: () => {
+            this.employeeList[this.editIndex!] = employeeData;
+            this.successMessage = 'Employee updated successfully ✅';
+            this.editIndex = null;
+            this.employeeForm.reset();
+          },
+          error: (err) => console.error('Update failed', err),
+        });
       } else {
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            this.successMessage = alert('Employee added successfully ✅');
-              this.employeeForm.reset();
+            this.successMessage = 'Employee added successfully ✅';
+            this.employeeForm.reset();
           },
+          error: (err) => console.error('Add failed', err),
         });
       }
     }
@@ -65,7 +82,7 @@ export class EmployeeComponent {
     return !!this.employeeForm.get(fieldName)?.hasError(errorName);
   }
 
-  isDeleteEmplyoee(index: number) {
+  deleteEmployee(index: number) {
     this.employeeList.splice(index, 1);
   }
 
@@ -80,7 +97,7 @@ export class EmployeeComponent {
     });
   }
 
-  loadEmployess() {
+  loadEmployees() {
     this.employeeService.getEmployee().subscribe({
       next: (data: Employee[]) => {
         this.employeeList = data;

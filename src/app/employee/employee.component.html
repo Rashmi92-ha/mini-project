@@ -52,7 +52,9 @@
     </button>
   </div>
 </form>
-<p>{{ successMessage }}</p>
+<div *ngIf="successMessage" class="alert alert-success">
+  {{ successMessage }}
+</div>
 
 <h2>Employee List</h2>
 <ul>
@@ -64,7 +66,7 @@
     |
     {{ employee.salary }}
     <button class="edit-btn" (click)="editEmployee(employee, i)">Edit</button>
-    <button (click)="isDeleteEmplyoee(i)">Delete</button>
+    <button (click)="deleteEmployee(i)">Delete</button>
     <button [routerLink]="['/employee' , employee.id]">View</button>
   </li>
 </ul>

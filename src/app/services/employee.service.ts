@@ -7,24 +7,25 @@ import { Employee } from '../models/employee';
   providedIn: 'root',
 })
 export class EmployeeService {
+  private apiUrl = 'https://jsonplaceholder.typicode.com/users';
   constructor(private httpClient: HttpClient) {}
 
   getEmployee(): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>(
-      'https://jsonplaceholder.typicode.com/users',
-    );
+    return this.httpClient.get<Employee[]>(`${this.apiUrl}`);
   }
 
   addEmployee(employee: Employee): Observable<Employee> {
-    return this.httpClient.post<Employee>(
-      'https://jsonplaceholder.typicode.com/users',
-      employee,
-    );
+    return this.httpClient.post<Employee>(`${this.apiUrl}`, employee);
   }
 
   getEmployeeById(id: string): Observable<Employee> {
-    return this.httpClient.get<Employee>(
-      `https://jsonplaceholder.typicode.com/users/${id}`,
+    return this.httpClient.get<Employee>(`${this.apiUrl}/${id}`);
+  }
+
+  updateEmployee(employee: Employee): Observable<Employee> {
+    return this.httpClient.put<Employee>(
+      `${this.apiUrl}/${employee.id}`,
+      employee,
     );
   }
 }
