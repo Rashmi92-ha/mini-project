@@ -35,6 +35,10 @@ export class EmployeeComponent {
 
   ngOnInit() {
     this.loadEmployees();
+    const data = localStorage.getItem('employeeList');
+    if (data) {
+      this.employeeList = JSON.parse(data);
+    }
   }
 
   onSubmit() {
@@ -64,6 +68,10 @@ export class EmployeeComponent {
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
+            localStorage.setItem(
+              'this.employeeList',
+              JSON.stringify(this.employeeList),
+            );
             this.successMessage = 'Employee added successfully ✅';
             this.employeeForm.reset();
           },
