@@ -1,4 +1,13 @@
-<h2>Dashboard</h2>
-<button (click)="logout()">
-  Logout
-</button>
+<h2>Employee Dashboard</h2>
+
+<div class="dashboard-container">
+  <div class="card">
+    <h3>Total Employees</h3>
+    <p>{{ totalEmployee }}</p>
+  </div>
+  <div class="card">
+    <h3>Total Email</h3>
+    <p>{{ totalEmail }}</p>
+  </div>
+</div>
+<button (click)="logout()">Logout</button>

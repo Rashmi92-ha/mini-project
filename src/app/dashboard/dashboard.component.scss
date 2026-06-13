@@ -1,0 +1,13 @@
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+}
+.card {
+  border: 1px solid #000000;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+}
+button {
+  margin-top: 20px;
+}
