@@ -9,5 +9,32 @@
     <h3>Total Email</h3>
     <p>{{ totalEmail }}</p>
   </div>
+  <div class="card">
+    <h3>Total Phone Number</h3>
+    <p>{{ totalPhone }}</p>
+  </div>
+  <div class="card">
+    <h3>Total Company Name</h3>
+    <p>{{ totalCompany }}</p>
+  </div>
 </div>
+<h3>Employee List</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Company Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employe of employeeList">
+      <td>{{ employe.name }}</td>
+      <td>{{ employe.email }}</td>
+      <td>{{ employe.phone }}</td>
+      <td>{{ employe.company?.name}}</td>
+    </tr>
+  </tbody>
+</table>
 <button (click)="logout()">Logout</button>
