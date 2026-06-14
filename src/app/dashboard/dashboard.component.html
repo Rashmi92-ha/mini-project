@@ -19,6 +19,7 @@
   </div>
 </div>
 <h3>Employee List</h3>
+<input type="text" placeholder="Search Employee" [(ngModel)]="searchText" />
 <table>
   <thead>
     <tr>
@@ -29,11 +30,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let employe of employeeList">
+    <tr *ngFor="let employe of filteredEmployees">
       <td>{{ employe.name }}</td>
       <td>{{ employe.email }}</td>
       <td>{{ employe.phone }}</td>
-      <td>{{ employe.company?.name}}</td>
+      <td>{{ employe.company?.name }}</td>
     </tr>
   </tbody>
 </table>

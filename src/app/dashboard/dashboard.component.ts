@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -16,6 +17,7 @@ export class DashboardComponent {
   totalEmail = 0;
   totalPhone = 0;
   totalCompany = 0;
+  searchText = '';
 
   constructor(
     private router: Router,
@@ -30,12 +32,18 @@ export class DashboardComponent {
         (employee) => employee.email,
       ).length;
       this.totalPhone = this.employeeList.filter(
-        (employeePhone) => employeePhone.phone
+        (employeePhone) => employeePhone.phone,
       ).length;
       this.totalCompany = this.employeeList.filter(
-        (employeeCompany) => employeeCompany.company?.name
+        (employeeCompany) => employeeCompany.company?.name,
       ).length;
     });
+  }
+
+  get filteredEmployees() {
+    return this.employeeList.filter((employee) =>
+      employee.name.toLowerCase().includes(this.searchText.toLowerCase()),
+    );
   }
 
   logout() {
