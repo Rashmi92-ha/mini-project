@@ -6,8 +6,23 @@
   border: 1px solid #000000;
   padding: 20px;
   width: 200px;
+  background-color: #00a2ff;
   text-align: center;
 }
 button {
   margin-top: 20px;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse ;
+}
+th,
+td{
+  border: 1px solid #000000 ;
+  text-align: center;
+}
+th{
+  text-align: center;
+  background-color: #7fff00;
 }

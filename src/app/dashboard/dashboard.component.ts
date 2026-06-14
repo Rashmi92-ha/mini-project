@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -14,6 +14,8 @@ export class DashboardComponent {
   employeeList: Employee[] = [];
   totalEmployee = 0;
   totalEmail = 0;
+  totalPhone = 0;
+  totalCompany = 0;
 
   constructor(
     private router: Router,
@@ -26,6 +28,12 @@ export class DashboardComponent {
       this.totalEmployee = this.employeeList.length;
       this.totalEmail = this.employeeList.filter(
         (employee) => employee.email,
+      ).length;
+      this.totalPhone = this.employeeList.filter(
+        (employeePhone) => employeePhone.phone
+      ).length;
+      this.totalCompany = this.employeeList.filter(
+        (employeeCompany) => employeeCompany.company?.name
       ).length;
     });
   }
