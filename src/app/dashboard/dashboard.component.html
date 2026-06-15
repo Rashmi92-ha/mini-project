@@ -19,7 +19,12 @@
   </div>
 </div>
 <h3>Employee List</h3>
-<input type="text" placeholder="Search Employee" [(ngModel)]="searchText" />
+<div>
+  <input type="text" placeholder="Search Employee" [(ngModel)]="searchText" />
+  <button (click)="sortEmployee()">
+    {{ isAscending ? "sort A-Z" : "sort Z-A" }}
+  </button>
+</div>
 <table>
   <thead>
     <tr>
