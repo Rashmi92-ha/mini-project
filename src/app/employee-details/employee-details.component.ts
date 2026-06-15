@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
-import { UpperCasePipe } from '@angular/common';
+import { UpperCasePipe, NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
-  imports: [UpperCasePipe],
+  imports: [UpperCasePipe, NgIf],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })
@@ -16,6 +17,7 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private employeeService: EmployeeService,
+    private router : Router,
   ) {}
   ngOnInit() {
     const employeeId = this.route.snapshot.paramMap.get('id');
@@ -29,5 +31,9 @@ export class EmployeeDetailsComponent implements OnInit {
         },
       });
     }
+  }
+  backLogin(){
+    localStorage.removeItem('isLoggedIn');
+    this.router.navigate(['/login-page']);
   }
 }

@@ -31,7 +31,11 @@
   </thead>
   <tbody>
     <tr *ngFor="let employe of filteredEmployees">
-      <td>{{ employe.name }}</td>
+      <td>
+        <a [routerLink]="['/employee', employe.id]">
+          {{ employe.name }}
+        </a>
+      </td>
       <td>{{ employe.email }}</td>
       <td>{{ employe.phone }}</td>
       <td>{{ employe.company?.name }}</td>
