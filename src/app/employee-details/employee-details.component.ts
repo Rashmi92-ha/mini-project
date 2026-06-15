@@ -32,8 +32,7 @@ export class EmployeeDetailsComponent implements OnInit {
       });
     }
   }
-  backLogin(){
-    localStorage.removeItem('isLoggedIn');
-    this.router.navigate(['/login-page']);
+    backLogin(){
+     this.router.navigate(['/dashboard']); 
   }
 }
