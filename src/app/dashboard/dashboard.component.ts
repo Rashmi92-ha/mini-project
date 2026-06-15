@@ -19,6 +19,7 @@ export class DashboardComponent {
   totalPhone = 0;
   totalCompany = 0;
   searchText = '';
+  isAscending = true;
 
   constructor(
     private router: Router,
@@ -50,5 +51,14 @@ export class DashboardComponent {
   logout() {
     localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/login-page']);
+  }
+
+  sortEmployee() {
+    if (this.isAscending) {
+      this.employeeList.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      this.employeeList.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    this.isAscending = !this.isAscending;
   }
 }
