@@ -48,3 +48,11 @@
   </tbody>
 </table>
 <button (click)="logout()">Logout</button>
+
+<h2>Employee card</h2>
+<app-employee-card
+  *ngFor="let employee of employeeList"
+  [employee]="employee"
+  (deleteEmployee)="removeEmployee($event)"
+>
+</app-employee-card>
