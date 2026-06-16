@@ -5,10 +5,11 @@ import { Employee } from '../models/employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { EmployeeCardComponent } from '../employee-card/employee-card.component';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, EmployeeCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -60,5 +61,11 @@ export class DashboardComponent {
       this.employeeList.sort((a, b) => b.name.localeCompare(a.name));
     }
     this.isAscending = !this.isAscending;
+  }
+
+  removeEmployee(id: number) {
+    this.employeeList = this.employeeList.filter(
+      (employee) => employee.id !== id,
+    );
   }
 }
