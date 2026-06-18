@@ -35,24 +35,28 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let employe of filteredEmployees">
-      <td>
-        <a [routerLink]="['/employee', employe.id]">
-          {{ employe.name }}
-        </a>
-      </td>
-      <td>{{ employe.email }}</td>
-      <td>{{ employe.phone }}</td>
-      <td>{{ employe.company?.name }}</td>
-    </tr>
+    @for (employe of filteredEmployees; track employe.id) {
+      <tr>
+        <td>
+          <a [routerLink]="['/employee', employe.id]">
+            {{ employe.name }}
+          </a>
+        </td>
+        <td>{{ employe.email }}</td>
+        <td>{{ employe.phone }}</td>
+        <td>{{ employe.company?.name }}</td>
+      </tr>
+    }
   </tbody>
 </table>
 <button (click)="logout()">Logout</button>
 
 <h2>Employee card</h2>
-<app-employee-card
-  *ngFor="let employee of employeeList"
-  [employee]="employee"
-  (deleteEmployee)="removeEmployee($event)"
->
-</app-employee-card>
+@for (employee of employeeList; track employee.id) {
+  <app-employee-card
+    *ngFor="let employee of employeeList"
+    [employee]="employee"
+    (deleteEmployee)="removeEmployee($event)"
+  >
+  </app-employee-card>
+}
