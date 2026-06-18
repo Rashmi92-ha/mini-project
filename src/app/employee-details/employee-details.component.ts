@@ -4,11 +4,12 @@ import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
 import { UpperCasePipe, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { SignalDemoComponent } from '../signal-demo/signal-demo.component';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
-  imports: [UpperCasePipe, NgIf],
+  imports: [UpperCasePipe, NgIf, SignalDemoComponent],
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })
