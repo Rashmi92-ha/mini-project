@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { EmployeeCardComponent } from '../employee-card/employee-card.component';
+import { AuthService } from '../services/auth.service'; // ✅ added
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -13,18 +15,19 @@ import { EmployeeCardComponent } from '../employee-card/employee-card.component'
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   employeeList: Employee[] = [];
   totalEmployee = 0;
   totalEmail = 0;
-  totalPhone = 0;
-  totalCompany = 0;
+  totalDepartment = 0;
+  totalActive = 0;
   searchText = '';
   isAscending = true;
 
   constructor(
     private router: Router,
     private employeeService: EmployeeService,
+    private authService: AuthService, // ✅ added
   ) {}
 
   ngOnInit() {
@@ -34,11 +37,11 @@ export class DashboardComponent {
       this.totalEmail = this.employeeList.filter(
         (employee) => employee.email,
       ).length;
-      this.totalPhone = this.employeeList.filter(
-        (employeePhone) => employeePhone.phone,
+      this.totalDepartment = this.employeeList.filter(
+        (employee) => employee.department,
       ).length;
-      this.totalCompany = this.employeeList.filter(
-        (employeeCompany) => employeeCompany.company?.name,
+      this.totalActive = this.employeeList.filter(
+        (employee) => employee.status === 'Active',
       ).length;
     });
   }
@@ -50,8 +53,7 @@ export class DashboardComponent {
   }
 
   logout() {
-    localStorage.removeItem('isLoggedIn');
-    this.router.navigate(['/login-page']);
+    this.authService.logout(); // ✅ uses real AuthService now, was localStorage.removeItem('isLoggedIn')
   }
 
   sortEmployee() {
@@ -63,9 +65,16 @@ export class DashboardComponent {
     this.isAscending = !this.isAscending;
   }
 
-  removeEmployee(id: number) {
-    this.employeeList = this.employeeList.filter(
-      (employee) => employee.id !== id,
-    );
+  removeEmployee(id: string) {
+    // ✅ changed from number to string
+    this.employeeService.deleteEmployee(id).subscribe({
+      // ✅ now calls real API, was just filtering array
+      next: () => {
+        this.employeeList = this.employeeList.filter(
+          (employee) => employee._id !== id,
+        );
+      },
+      error: (err) => console.error('Delete failed', err),
+    });
   }
 }

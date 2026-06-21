@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
-import { UpperCasePipe, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { UpperCasePipe } from '@angular/common';
 import { SignalDemoComponent } from '../signal-demo/signal-demo.component';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
-  imports: [UpperCasePipe, NgIf, SignalDemoComponent],
+  imports: [UpperCasePipe, SignalDemoComponent], // ✅ removed NgIf — not needed with @if syntax
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })
 export class EmployeeDetailsComponent implements OnInit {
   employee!: Employee;
+
   constructor(
     private route: ActivatedRoute,
     private employeeService: EmployeeService,
-    private router : Router,
+    private router: Router,
   ) {}
+
   ngOnInit() {
     const employeeId = this.route.snapshot.paramMap.get('id');
     if (employeeId) {
@@ -33,7 +34,8 @@ export class EmployeeDetailsComponent implements OnInit {
       });
     }
   }
-    backLogin(){
-     this.router.navigate(['/dashboard']); 
+
+  backLogin() {
+    this.router.navigate(['/dashboard']);
   }
 }

@@ -22,23 +22,16 @@ export class EmployeeComponent {
   employeeForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[0-9]{10}$'),
-    ]),
-    designation: new FormControl('', Validators.required),
+    department: new FormControl('', Validators.required),
+    role: new FormControl('', Validators.required),
     salary: new FormControl('', Validators.required),
   });
   successMessage: any;
   employeeList: Employee[] = [];
-  editIndex: number | null = null;
+  editId: string | null = null;
 
   ngOnInit() {
     this.loadEmployees();
-    const data = localStorage.getItem('employeeList');
-    if (data) {
-      this.employeeList = JSON.parse(data);
-    }
   }
 
   onSubmit() {
@@ -46,32 +39,34 @@ export class EmployeeComponent {
       const formValue = this.employeeForm.value;
 
       const employeeData: Employee = {
-        id: this.editIndex !== null ? this.employeeList[this.editIndex].id : 0,
         name: formValue.name ?? '',
         email: formValue.email ?? '',
-        phone: formValue.phone ?? '',
-        designation: formValue.designation ?? '',
-        salary: formValue.salary ?? 0,
+        department: formValue.department ?? '',
+        role: formValue.role ?? '',
+        salary: Number(formValue.salary) ?? 0,
       };
-
-      if (this.editIndex !== null) {
-        this.employeeService.updateEmployee(employeeData).subscribe({
-          next: () => {
-            this.employeeList[this.editIndex!] = employeeData;
-            this.successMessage = 'Employee updated successfully ✅';
-            this.editIndex = null;
-            this.employeeForm.reset();
-          },
-          error: (err) => console.error('Update failed', err),
-        });
+      if (this.editId !== null) {
+        this.employeeService
+          .updateEmployee({ ...employeeData, _id: this.editId })
+          .subscribe({
+            next: (updated) => {
+              const index = this.employeeList.findIndex(
+                (e) => e._id === this.editId,
+              );
+              if (index !== -1) {
+                this.employeeList[index] = updated;
+              }
+              this.successMessage = 'Employee updated successfully ✅';
+              this.editId = null;
+              this.employeeForm.reset();
+            },
+            error: (err) => console.error('Update failed', err),
+          });
       } else {
+        // Add new employee
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            localStorage.setItem(
-              'this.employeeList',
-              JSON.stringify(this.employeeList),
-            );
             this.successMessage = 'Employee added successfully ✅';
             this.employeeForm.reset();
           },
@@ -90,17 +85,22 @@ export class EmployeeComponent {
     return !!this.employeeForm.get(fieldName)?.hasError(errorName);
   }
 
-  deleteEmployee(index: number) {
-    this.employeeList.splice(index, 1);
+  deleteEmployee(id: string) {
+    this.employeeService.deleteEmployee(id).subscribe({
+      next: () => {
+        this.employeeList = this.employeeList.filter((e) => e._id !== id);
+      },
+      error: (err) => console.error('Delete failed', err),
+    });
   }
 
-  editEmployee(employee: Employee, index: number) {
-    this.editIndex = index;
+  editEmployee(employee: Employee) {
+    this.editId = employee._id ?? null;
     this.employeeForm.patchValue({
       name: employee.name,
       email: employee.email,
-      phone: employee.phone,
-      designation: employee.designation,
+      department: employee.department,
+      role: employee.role,
       salary: employee.salary.toString(),
     });
   }

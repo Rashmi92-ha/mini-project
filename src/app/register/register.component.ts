@@ -1,0 +1,42 @@
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
+
+@Component({
+  selector: 'app-register',
+  standalone: true,
+  imports: [RouterLink, FormsModule],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
+})
+export class RegisterComponent {
+  username = '';
+  password = '';
+  confirmPassword = '';
+  errorMessage = '';
+  sucessMessage = '';
+
+  constructor(
+    private router: Router,
+    private authServices: AuthService,
+  ) {}
+
+  register() {
+    if (this.password !== this.confirmPassword) {
+      this.errorMessage = 'Password do not match!';
+      return;
+    }
+    this.authServices.registerApi(this.username, this.password).subscribe({
+      next: () => {
+        this.sucessMessage = 'Registration successful! Redirecting to login...';
+        setTimeout(() => {
+          this.router.navigate(['/login-page']);
+        }, 1500);
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Registration failed!';
+      },
+    });
+  }
+}
