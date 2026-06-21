@@ -1,0 +1,18 @@
+<div class="login-container">
+  <h2>Employee Management</h2>
+  <h4>Create Account</h4>
+
+  <input type="text" placeholder="Username" [(ngModel)]="username" />
+  <input type="password" placeholder="Password" [(ngModel)]="password" />
+  <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+
+  <button (click)="register()">Register</button>
+
+  @if (errorMessage) {
+    <p style="color:red">{{ errorMessage }}</p>
+  }
+  @if (sucessMessage) {
+    <p style="color:green">{{ sucessMessage }}</p>
+  }
+</div>
+  <p>Already have an account? <a routerLink="/login-page">Login here</a></p>

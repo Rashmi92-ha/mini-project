@@ -10,14 +10,15 @@
     <p>{{ totalEmail }}</p>
   </div>
   <div class="card">
-    <h3>Total Phone Number</h3>
-    <p>{{ totalPhone }}</p>
+    <h3>Total Department</h3>
+    <p>{{ totalDepartment }}</p>
   </div>
   <div class="card">
-    <h3>Total Company Name</h3>
-    <p>{{ totalCompany }}</p>
+    <h3>Active Employees</h3>
+    <p>{{ totalActive }}</p>
   </div>
 </div>
+
 <h3>Employee List</h3>
 <div>
   <input type="text" placeholder="Search Employee" [(ngModel)]="searchText" />
@@ -25,36 +26,39 @@
     {{ isAscending ? "sort A-Z" : "sort Z-A" }}
   </button>
 </div>
+
 <table>
   <thead>
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th>Phone</th>
-      <th>Company Name</th>
+      <th>Department</th>
+      <th>Role</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
-    @for (employe of filteredEmployees; track employe.id) {
+    @for (employe of filteredEmployees; track employe._id) {
       <tr>
         <td>
-          <a [routerLink]="['/employee', employe.id]">
+          <a [routerLink]="['/employee', employe._id]">
             {{ employe.name }}
           </a>
         </td>
         <td>{{ employe.email }}</td>
-        <td>{{ employe.phone }}</td>
-        <td>{{ employe.company?.name }}</td>
+        <td>{{ employe.department }}</td>
+        <td>{{ employe.role }}</td>
+        <td>{{ employe.status }}</td>
       </tr>
     }
   </tbody>
 </table>
+
 <button (click)="logout()">Logout</button>
 
 <h2>Employee card</h2>
-@for (employee of employeeList; track employee.id) {
+@for (employee of employeeList; track employee._id) {
   <app-employee-card
-    *ngFor="let employee of employeeList"
     [employee]="employee"
     (deleteEmployee)="removeEmployee($event)"
   >

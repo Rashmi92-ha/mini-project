@@ -18,36 +18,33 @@
   </div>
 
   <div class="field">
-    <input type="text" placeholder="PhoneNumber" formControlName="phone" />
-    @if (isFieldInvalid("phone") && hasError("phone", "required")) {
-      <small> Phone number is required </small>
-    }
-    @if (isFieldInvalid("phone") && hasError("phone", "pattern")) {
-      <small> Phone must contain 10 digits </small>
+    <input type="text" placeholder="Department" formControlName="department" />
+    @if (isFieldInvalid("department") && hasError("department", "required")) {
+      <small> Department is required </small>
     }
   </div>
+
   <div class="field">
-    <input
-      type="text"
-      placeholder="Designation"
-      formControlName="designation"
-    />
-    @if (isFieldInvalid("designation") && hasError("designation", "required")) {
-      <small> designation is required </small>
+    <input type="text" placeholder="Role" formControlName="role" />
+    @if (isFieldInvalid("role") && hasError("role", "required")) {
+      <small> Role is required </small>
     }
   </div>
+
   <div class="field">
     <input type="number" placeholder="Salary" formControlName="salary" />
     @if (isFieldInvalid("salary") && hasError("salary", "required")) {
-      <small> salary is required </small>
+      <small> Salary is required </small>
     }
   </div>
+
   <div class="button">
     <button type="submit" [disabled]="employeeForm.invalid">
-      Add Employee
+      {{ editId ? "Update Employee" : "Add Employee" }}
     </button>
   </div>
 </form>
+
 @if (successMessage) {
   <div class="alert alert-success">
     {{ successMessage }}
@@ -56,17 +53,17 @@
 
 <h2>Employee List</h2>
 <ul>
-  @for (employee of employeeList; track employee.id; let i = $index) {
-    <li *ngFor="let employee of employeeList; let i = index">
+  @for (employee of employeeList; track employee._id) {
+    <li>
       {{ employee.name }}
       |
-      {{ employee.email }}| {{ employee.phone }}|
-      {{ employee.designation }}
+      {{ employee.email }} | {{ employee.department }} |
+      {{ employee.role }}
       |
       {{ employee.salary }}
-      <button class="edit-btn" (click)="editEmployee(employee, i)">Edit</button>
-      <button (click)="deleteEmployee(i)">Delete</button>
-      <button [routerLink]="['/employee', employee.id]">View</button>
+      <button class="edit-btn" (click)="editEmployee(employee)">Edit</button>
+      <button (click)="deleteEmployee(employee._id!)">Delete</button>
+      <button [routerLink]="['/employee', employee._id]">View</button>
     </li>
   }
 </ul>

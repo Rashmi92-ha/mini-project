@@ -1,11 +1,9 @@
 export interface Employee {
-  id?: number;
+  _id?: string;
   name: string;
   email: string;
-  phone: string;
-  company?: {
-    name: string;
-  };
-  designation: string;
-  salary: number | string;
+  department: string;
+  role: string;
+  salary: number;
+  status?: 'Active' | 'Inactive';
 }

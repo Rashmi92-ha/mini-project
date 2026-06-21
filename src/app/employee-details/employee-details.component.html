@@ -1,11 +1,13 @@
 @if (employee) {
-  <div *ngIf="employee">
+  <div>
     <h2>Employee Details</h2>
-    <p><b>ID:</b>{{ employee.id }}</p>
-    <p><b>Name:</b>{{ employee.name | uppercase }}</p>
-    <p><b>Email:</b>{{ employee.email }}</p>
-    <p><b>Phone:</b>{{ employee.phone }}</p>
-    <p><b>Company:</b>{{ employee.company?.name }}</p>
+    <p><b>ID:</b> {{ employee._id }}</p>
+    <p><b>Name:</b> {{ employee.name | uppercase }}</p>
+    <p><b>Email:</b> {{ employee.email }}</p>
+    <p><b>Department:</b> {{ employee.department }}</p>
+    <p><b>Role:</b> {{ employee.role }}</p>
+    <p><b>Salary:</b> {{ employee.salary }}</p>
+    <p><b>Status:</b> {{ employee.status }}</p>
   </div>
 }
 <button (click)="backLogin()">Back to Dashboard</button>

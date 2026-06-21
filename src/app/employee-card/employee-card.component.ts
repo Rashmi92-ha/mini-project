@@ -12,9 +12,9 @@ export class EmployeeCardComponent {
   @Input()
   employee!: Employee;
 
-  @Output() deleteEmployee = new EventEmitter<number>();
+  @Output() deleteEmployee = new EventEmitter<string>(); // ✅ changed from number to string
 
   delete() {
-    this.deleteEmployee.emit(this.employee.id);
+    this.deleteEmployee.emit(this.employee._id); // ✅ changed from .id to ._id
   }
 }
