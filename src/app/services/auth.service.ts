@@ -25,8 +25,8 @@ export class AuthService {
       .post<any>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         map((response) => {
-          if (response.token) {
-            this.login(response.token);
+          if (response.token && response.refreshToken) {
+            this.login(response.token, response.refreshToken);
             return true;
           }
           return false;
@@ -41,14 +41,22 @@ export class AuthService {
     });
   }
   // Call this after login API responds
-  login(token: string) {
+  login(token: string, refreshToken: string) {
     localStorage.setItem('token', token); // ✅ store real token
+    localStorage.setItem('refreshToken', refreshToken);
     this.scheduleAutoLogout();
   }
 
   logout() {
-    clearTimeout(this.logoutTimer);
+    const refreshToken = this.getRefreshToken();
+    if (refreshToken) {
+      this.httpClient
+        .post(`${this.apiUrl}/logout`, { refreshToken })
+        .subscribe();
+    }
     localStorage.removeItem('token'); // ✅ remove token
+    localStorage.removeItem('refreshToken');
+    clearTimeout(this.logoutTimer);
     this.router.navigate(['/login-page']);
   }
 
@@ -68,6 +76,10 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  getRefreshToken(): string | null {
+    return localStorage.getItem('refreshToken');
+  }
+
   getTokenPayload(): any | null {
     const token = this.getToken();
     if (!token) {
@@ -78,6 +90,22 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+  }
+  
+  refreshAccessToken(): Observable<boolean> {
+    const refreshToken = this.getRefreshToken();
+    return this.httpClient
+      .post<any>(`${this.apiUrl}/refresh`, { refreshToken })
+      .pipe(
+        map((response) => {
+          if (response.token) {
+            localStorage.setItem('token', response.token);
+            this.scheduleAutoLogout();
+            return true;
+          }
+          return false;
+        }),
+      );
   }
 
   isTokenExpired(): boolean {
@@ -100,11 +128,24 @@ export class AuthService {
     const expiresInMs = payload.exp * 1000 - Date.now();
 
     if (expiresInMs <= 0) {
-      this.logout();
+      this.attemptRefreshOrLogout();
       return;
     }
     this.logoutTimer = setTimeout(() => {
-      this.logout();
+      this.attemptRefreshOrLogout();
     }, expiresInMs);
+  }
+
+  private attemptRefreshOrLogout() {
+    this.refreshAccessToken().subscribe({
+      next: (success) => {
+        if (!success) {
+          this.logout();
+        }
+      },
+      error: () => {
+        this.logout();
+      },
+    });
   }
 }
