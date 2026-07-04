@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmployeeService } from '../services/employee.service';
-import { Employee } from '../models/employee';
+import { EmployeeService } from '../⚙️services/employee.service';
+import { Employee } from '../📦models/employee';
 import { UpperCasePipe } from '@angular/common';
-import { SignalDemoComponent } from '../signal-demo/signal-demo.component';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
-  imports: [UpperCasePipe, SignalDemoComponent], // ✅ removed NgIf — not needed with @if syntax
+  imports: [UpperCasePipe], // ✅ removed NgIf — not needed with @if syntax
   templateUrl: './employee-details.component.html',
   styleUrl: './employee-details.component.scss',
 })

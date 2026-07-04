@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmployeeService } from '../services/employee.service';
-import { Employee } from '../models/employee';
+import { EmployeeService } from '../⚙️services/employee.service';
+import { Employee } from '../📦models/employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { EmployeeCardComponent } from '../employee-card/employee-card.component';
-import { AuthService } from '../services/auth.service'; // ✅ added
+import { EmployeeCardComponent } from '../🪪employee-card/employee-card.component';
+import { AuthService } from '../⚙️services/auth.service'; // ✅ added
 
 @Component({
   selector: 'app-dashboard',
