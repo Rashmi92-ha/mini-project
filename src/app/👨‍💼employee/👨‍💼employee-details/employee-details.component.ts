@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmployeeService } from '../⚙️services/employee.service';
-import { Employee } from '../📦models/employee';
+import { EmployeeService } from '../../⚙️services/employee.service';
+import { Employee } from '../../👨‍💼employee/📦models/employee';
 import { UpperCasePipe } from '@angular/common';
 
 @Component({

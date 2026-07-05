@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../⚙️services/employee.service';
-import { Employee } from '../📦models/employee';
+import { Employee } from '../👨‍💼employee/📦models/employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { EmployeeCardComponent } from '../🪪employee-card/employee-card.component';
 import { AuthService } from '../⚙️services/auth.service'; // ✅ added
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, EmployeeCardComponent],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -50,10 +49,6 @@ export class DashboardComponent implements OnInit {
     return this.employeeList.filter((employee) =>
       employee.name.toLowerCase().includes(this.searchText.toLowerCase()),
     );
-  }
-
-  logout() {
-    this.authService.logout(); // ✅ uses real AuthService now, was localStorage.removeItem('isLoggedIn')
   }
 
   sortEmployee() {
