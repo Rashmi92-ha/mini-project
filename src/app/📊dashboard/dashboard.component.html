@@ -53,14 +53,3 @@
     }
   </tbody>
 </table>
-
-<button (click)="logout()">Logout</button>
-
-<h2>Employee card</h2>
-@for (employee of employeeList; track employee._id) {
-  <app-employee-card
-    [employee]="employee"
-    (deleteEmployee)="removeEmployee($event)"
-  >
-  </app-employee-card>
-}

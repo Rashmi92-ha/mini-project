@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Employee } from '../📦models/employee';
+import { Employee } from  '../👨‍💼employee/📦models/employee';
 import { EmployeeService } from '../⚙️services/employee.service';
 import { RouterLink } from '@angular/router';
 @Component({
