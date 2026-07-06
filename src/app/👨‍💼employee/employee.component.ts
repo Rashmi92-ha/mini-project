@@ -14,9 +14,12 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-employee',
   standalone: true,
+  providers: [MessageService],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -26,12 +29,16 @@ import { FormsModule } from '@angular/forms';
     DialogModule,
     InputTextModule,
     FormsModule,
+    ToastModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
 })
 export class EmployeeComponent {
-  constructor(private employeeService: EmployeeService) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private messageService: MessageService,
+  ) {}
 
   employeeForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -72,7 +79,11 @@ export class EmployeeComponent {
               if (index !== -1) {
                 this.employeeList[index] = updated;
               }
-              this.successMessage = 'Employee updated successfully ✅';
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Updated',
+                detail: 'Employee updated successfully',
+              });
               this.editId = null;
               this.employeeForm.reset();
               this.displayDialog = false;
@@ -84,7 +95,11 @@ export class EmployeeComponent {
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            this.successMessage = 'Employee added successfully ✅';
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Employee added successfully',
+            });
             this.employeeForm.reset();
             this.displayDialog = false;
           },
@@ -107,6 +122,12 @@ export class EmployeeComponent {
     this.employeeService.deleteEmployee(id).subscribe({
       next: () => {
         this.employeeList = this.employeeList.filter((e) => e._id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: 'Employee deleted successfully',
+        });
+        this.loadEmployees();
       },
       error: (err) => console.error('Delete failed', err),
     });
@@ -143,13 +164,14 @@ export class EmployeeComponent {
     this.displayDialog = false;
   }
 
-  filterEmployee(){
+  filterEmployee() {
     const search = this.searchText.toLowerCase();
-    this.filteredEmployees = this.employeeList.filter(employee =>
-      employee.name.toLowerCase().includes(search) || 
-      employee.email.toLowerCase().includes(search) ||
-      employee.department.toLowerCase().includes(search)||
-      employee.role.toLowerCase().includes(search)
-      );
+    this.filteredEmployees = this.employeeList.filter(
+      (employee) =>
+        employee.name.toLowerCase().includes(search) ||
+        employee.email.toLowerCase().includes(search) ||
+        employee.department.toLowerCase().includes(search) ||
+        employee.role.toLowerCase().includes(search),
+    );
   }
 }
