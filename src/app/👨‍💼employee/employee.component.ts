@@ -16,10 +16,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 @Component({
   selector: 'app-employee',
   standalone: true,
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -30,6 +32,7 @@ import { MessageService } from 'primeng/api';
     InputTextModule,
     FormsModule,
     ToastModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
@@ -38,6 +41,7 @@ export class EmployeeComponent {
   constructor(
     private employeeService: EmployeeService,
     private messageService: MessageService,
+    private confirmService: ConfirmationService,
   ) {}
 
   employeeForm = new FormGroup({
@@ -119,17 +123,27 @@ export class EmployeeComponent {
   }
 
   deleteEmployee(id: string) {
-    this.employeeService.deleteEmployee(id).subscribe({
-      next: () => {
-        this.employeeList = this.employeeList.filter((e) => e._id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Deleted',
-          detail: 'Employee deleted successfully',
+    this.confirmService.confirm({
+      header: 'Delete Employee',
+      message: 'Are you sure you want to delete this employee',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.employeeService.deleteEmployee(id).subscribe({
+          next: () => {
+            this.employeeList = this.employeeList.filter((e) => e._id !== id);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Deleted',
+              detail: 'Employee deleted successfully',
+            });
+            this.loadEmployees();
+          },
+          error: (err) => console.error('Delete failed', err),
         });
-        this.loadEmployees();
       },
-      error: (err) => console.error('Delete failed', err),
     });
   }
 
