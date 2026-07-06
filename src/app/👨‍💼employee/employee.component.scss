@@ -7,14 +7,30 @@ small {
   color: #ff0000;
   font-size: 12px;
 }
-button {
-  color: #000000;
-  background-color: #0000ff;
-  margin-right: 10px;
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
-button:hover {
-  background-color: #005d8b;
+
+.employee-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
-.edit-btn {
-  margin-right: 10px;
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field input {
+  width: 100%;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
