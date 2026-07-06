@@ -7,8 +7,17 @@
     (click)="openDialog()"
   ></button>
 </div>
+<div class="search-container">
+  <input
+    pInputText
+    type="text"
+    placeholder="Search employee..."
+    [(ngModel)]="searchText"
+    (input)="filterEmployee()"
+  />
+</div>
 <p-table
-  [value]="employeeList"
+  [value]="filteredEmployees"
   responsiveLayout="scroll"
   styleClass="p-datatable-striped"
 >
