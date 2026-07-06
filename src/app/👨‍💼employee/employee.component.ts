@@ -6,13 +6,23 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Employee } from  '../👨‍💼employee/📦models/employee';
+import { Employee } from '../👨‍💼employee/📦models/employee';
 import { EmployeeService } from '../⚙️services/employee.service';
 import { RouterLink } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-employee',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    RouterLink,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+  ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
 })
@@ -29,6 +39,7 @@ export class EmployeeComponent {
   successMessage: any;
   employeeList: Employee[] = [];
   editId: string | null = null;
+  displayDialog = false;
 
   ngOnInit() {
     this.loadEmployees();
@@ -59,6 +70,7 @@ export class EmployeeComponent {
               this.successMessage = 'Employee updated successfully ✅';
               this.editId = null;
               this.employeeForm.reset();
+              this.displayDialog = false;
             },
             error: (err) => console.error('Update failed', err),
           });
@@ -69,6 +81,7 @@ export class EmployeeComponent {
             this.employeeList.push(response);
             this.successMessage = 'Employee added successfully ✅';
             this.employeeForm.reset();
+            this.displayDialog = false;
           },
           error: (err) => console.error('Add failed', err),
         });
@@ -103,6 +116,7 @@ export class EmployeeComponent {
       role: employee.role,
       salary: employee.salary.toString(),
     });
+    this.displayDialog = true;
   }
 
   loadEmployees() {
@@ -111,5 +125,15 @@ export class EmployeeComponent {
         this.employeeList = data;
       },
     });
+  }
+
+  openDialog() {
+    this.employeeForm.reset();
+    this.editId = null;
+    this.displayDialog = true;
+  }
+
+  closeDialog() {
+    this.displayDialog = false;
   }
 }
