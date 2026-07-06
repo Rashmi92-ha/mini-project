@@ -12,6 +12,8 @@ import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -22,6 +24,8 @@ import { DialogModule } from 'primeng/dialog';
     TableModule,
     ButtonModule,
     DialogModule,
+    InputTextModule,
+    FormsModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
@@ -38,8 +42,10 @@ export class EmployeeComponent {
   });
   successMessage: any;
   employeeList: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   editId: string | null = null;
   displayDialog = false;
+  searchText = '';
 
   ngOnInit() {
     this.loadEmployees();
@@ -48,7 +54,6 @@ export class EmployeeComponent {
   onSubmit() {
     if (this.employeeForm.valid) {
       const formValue = this.employeeForm.value;
-
       const employeeData: Employee = {
         name: formValue.name ?? '',
         email: formValue.email ?? '',
@@ -123,6 +128,7 @@ export class EmployeeComponent {
     this.employeeService.getEmployee().subscribe({
       next: (data: Employee[]) => {
         this.employeeList = data;
+        this.filteredEmployees = data;
       },
     });
   }
@@ -135,5 +141,15 @@ export class EmployeeComponent {
 
   closeDialog() {
     this.displayDialog = false;
+  }
+
+  filterEmployee(){
+    const search = this.searchText.toLowerCase();
+    this.filteredEmployees = this.employeeList.filter(employee =>
+      employee.name.toLowerCase().includes(search) || 
+      employee.email.toLowerCase().includes(search) ||
+      employee.department.toLowerCase().includes(search)||
+      employee.role.toLowerCase().includes(search)
+      );
   }
 }
