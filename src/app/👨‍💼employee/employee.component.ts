@@ -18,6 +18,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabelModule } from 'primeng/floatlabel';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -33,6 +35,8 @@ import { ConfirmationService } from 'primeng/api';
     FormsModule,
     ToastModule,
     ConfirmDialogModule,
+    FloatLabelModule,
+    InputNumberModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
@@ -49,7 +53,7 @@ export class EmployeeComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     department: new FormControl('', Validators.required),
     role: new FormControl('', Validators.required),
-    salary: new FormControl('', Validators.required),
+    salary: new FormControl<number | null>(null, Validators.required),
   });
   successMessage: any;
   employeeList: Employee[] = [];
@@ -70,7 +74,7 @@ export class EmployeeComponent {
         email: formValue.email ?? '',
         department: formValue.department ?? '',
         role: formValue.role ?? '',
-        salary: Number(formValue.salary) ?? 0,
+        salary: formValue.salary ?? 0,
       };
       if (this.editId !== null) {
         this.employeeService
@@ -154,7 +158,7 @@ export class EmployeeComponent {
       email: employee.email,
       department: employee.department,
       role: employee.role,
-      salary: employee.salary.toString(),
+      salary: employee.salary,
     });
     this.displayDialog = true;
   }

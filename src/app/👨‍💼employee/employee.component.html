@@ -20,16 +20,33 @@
 </div>
 <p-table
   [value]="filteredEmployees"
+  [paginator]="true"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]"
   responsiveLayout="scroll"
-  styleClass="p-datatable-striped"
 >
   <ng-template pTemplate="header">
     <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Department</th>
-      <th>Role</th>
-      <th>Salary</th>
+      <th pSortableColumn="name">
+        Name
+        <p-sortIcon field="name"></p-sortIcon>
+      </th>
+      <th pSortableColumn="email">
+        Email
+        <p-sortIcon field="email"></p-sortIcon>
+      </th>
+      <th pSortableColumn="department">
+        Department
+        <p-sortIcon field="department"></p-sortIcon>
+      </th>
+      <th pSortableColumn="role">
+        Role
+        <p-sortIcon field="role"></p-sortIcon>
+      </th>
+      <th pSortableColumn="salary">
+        Salary
+        <p-sortIcon field="salary"></p-sortIcon>
+      </th>
       <th>Actions</th>
     </tr>
   </ng-template>
@@ -77,44 +94,56 @@
 >
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <div class="field">
-      <input type="text" placeholder="Name" formControlName="name" />
+      <p-floatLabel>
+        <input pInputText id="name" formControlName="name" />
+        <label for="name">Name</label>
+      </p-floatLabel>
       @if (isFieldInvalid("name") && hasError("name", "required")) {
-        <small> Name is required </small>
+        <small>Name is required</small>
       }
     </div>
 
     <div class="field">
-      <input type="email" placeholder="Email" formControlName="email" />
+      <p-floatLabel>
+        <input pInputText id="email" type="email" formControlName="email" />
+        <label for="email">Email</label>
+      </p-floatLabel>
       @if (isFieldInvalid("email") && hasError("email", "required")) {
-        <small> Email is required </small>
+        <small>Email is required</small>
       }
       @if (isFieldInvalid("email") && hasError("email", "email")) {
-        <small> Invalid email format </small>
+        <small>Invalid email</small>
       }
     </div>
 
     <div class="field">
-      <input
-        type="text"
-        placeholder="Department"
-        formControlName="department"
-      />
+      <p-floatLabel>
+        <input pInputText id="department" formControlName="department" />
+        <label for="department">Department</label>
+      </p-floatLabel>
       @if (isFieldInvalid("department") && hasError("department", "required")) {
         <small> Department is required </small>
       }
     </div>
 
     <div class="field">
-      <input type="text" placeholder="Role" formControlName="role" />
+      <p-floatLabel>
+        <input pInputText id="role" formControlName="role" />
+        <label for="role">Role</label>
+      </p-floatLabel>
       @if (isFieldInvalid("role") && hasError("role", "required")) {
         <small> Role is required </small>
       }
     </div>
 
     <div class="field">
-      <input type="number" placeholder="Salary" formControlName="salary" />
+      <p-floatLabel>
+        <p-inputNumber inputId="salary" formControlName="salary">
+        </p-inputNumber>
+        <label for="salary">Salary</label>
+      </p-floatLabel>
       @if (isFieldInvalid("salary") && hasError("salary", "required")) {
-        <small> Salary is required </small>
+        <small>Salary is required</small>
       }
     </div>
     <div class="button">
