@@ -118,7 +118,15 @@
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="department" formControlName="department" />
+        <p-dropdown
+          inputId="department"
+          [options]="departments"
+          optionLabel="name"
+          optionValue="value"
+          formControlName="department"
+          placeholder="Select Department"
+        >
+        </p-dropdown>
         <label for="department">Department</label>
       </p-floatLabel>
       @if (isFieldInvalid("department") && hasError("department", "required")) {
@@ -128,7 +136,15 @@
 
     <div class="field">
       <p-floatLabel>
-        <input pInputText id="role" formControlName="role" />
+        <p-dropdown
+          inputId="role"
+          [options]="roles"
+          optionLabel="name"
+          optionValue="value"
+          formControlName="role"
+          placeholder="Select Role"
+        >
+        </p-dropdown>
         <label for="role">Role</label>
       </p-floatLabel>
       @if (isFieldInvalid("role") && hasError("role", "required")) {
