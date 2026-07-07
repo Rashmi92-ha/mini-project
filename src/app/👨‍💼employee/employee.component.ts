@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Employee } from '../👨‍💼employee/📦models/employee';
+import { Employee, EmployeeStatus } from '../👨‍💼employee/📦models/employee';
 import { EmployeeService } from '../⚙️services/employee.service';
 import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
@@ -21,6 +21,10 @@ import { ConfirmationService } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
+import { TagModule } from 'primeng/tag';
+import { DEPARTMENTS } from '../shared/constants/department.constants';
+import { ROLE } from '../shared/constants/role.constants';
+import { STATUS, STATUS_OPTIONS } from '../shared/constants/status.constants';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -39,6 +43,7 @@ import { DropdownModule } from 'primeng/dropdown';
     FloatLabelModule,
     InputNumberModule,
     DropdownModule,
+    TagModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
@@ -56,27 +61,36 @@ export class EmployeeComponent {
     department: new FormControl('', Validators.required),
     role: new FormControl('', Validators.required),
     salary: new FormControl<number | null>(null, Validators.required),
+    status: new FormControl<EmployeeStatus>(STATUS.ACTIVE, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
   });
-  successMessage: any;
+
   employeeList: Employee[] = [];
   filteredEmployees: Employee[] = [];
   editId: string | null = null;
   displayDialog = false;
+  loading = false;
   searchText = '';
-  departments = [
-    { name: 'IT', value: 'IT' },
-    { name: 'HR', value: 'HR' },
-    { name: 'Finance', value: 'Finance' },
-    { name: 'Sales', value: 'Sales' },
-    { name: 'Marketing', value: 'Marketing' },
-  ];
-  roles = [
-    { name: 'Developer', value: 'Developer' },
-    { name: 'Manager', value: 'Manager' },
-    { name: 'HR', value: 'HR' },
-    { name: 'Tester', value: 'Tester' },
-    { name: 'Admin', value: 'Admin' },
-  ];
+  departments = DEPARTMENTS;
+  roles = ROLE;
+  statusList = STATUS_OPTIONS;
+  private showSuccess(detail: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail,
+    });
+  }
+  private showError(detail: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail,
+    });
+  }
+
   ngOnInit() {
     this.loadEmployees();
   }
@@ -90,6 +104,7 @@ export class EmployeeComponent {
         department: formValue.department ?? '',
         role: formValue.role ?? '',
         salary: formValue.salary ?? 0,
+        status: formValue.status ?? STATUS.ACTIVE,
       };
       if (this.editId !== null) {
         this.employeeService
@@ -102,11 +117,7 @@ export class EmployeeComponent {
               if (index !== -1) {
                 this.employeeList[index] = updated;
               }
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Updated',
-                detail: 'Employee updated successfully',
-              });
+              this.showSuccess('Employee Updated successfully');
               this.editId = null;
               this.employeeForm.reset();
               this.displayDialog = false;
@@ -118,11 +129,7 @@ export class EmployeeComponent {
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Employee added successfully',
-            });
+            this.showSuccess('Employee added successfully');
             this.employeeForm.reset();
             this.displayDialog = false;
           },
@@ -153,11 +160,7 @@ export class EmployeeComponent {
         this.employeeService.deleteEmployee(id).subscribe({
           next: () => {
             this.employeeList = this.employeeList.filter((e) => e._id !== id);
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Deleted',
-              detail: 'Employee deleted successfully',
-            });
+            this.showSuccess('Employee deleted successfully');
             this.loadEmployees();
           },
           error: (err) => console.error('Delete failed', err),
@@ -174,15 +177,25 @@ export class EmployeeComponent {
       department: employee.department,
       role: employee.role,
       salary: employee.salary,
+      status: employee.status,
     });
     this.displayDialog = true;
   }
 
   loadEmployees() {
+    this.loading = true;
+
     this.employeeService.getEmployee().subscribe({
-      next: (data: Employee[]) => {
+      next: (data) => {
         this.employeeList = data;
         this.filteredEmployees = data;
+      },
+      error: (err) => {
+        console.error(err);
+        this.showError('Unable to load employees.');
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }
@@ -206,5 +219,16 @@ export class EmployeeComponent {
         employee.department.toLowerCase().includes(search) ||
         employee.role.toLowerCase().includes(search),
     );
+  }
+
+  getStatusSeverity(status: string) {
+    switch (status) {
+      case 'Active':
+        return 'success';
+      case 'Inactive':
+        return 'danger';
+      default:
+        return 'secondary';
+    }
   }
 }
