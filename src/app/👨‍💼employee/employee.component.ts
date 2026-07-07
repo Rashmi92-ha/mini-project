@@ -20,6 +20,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -37,6 +38,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     ConfirmDialogModule,
     FloatLabelModule,
     InputNumberModule,
+    DropdownModule,
   ],
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
@@ -61,7 +63,20 @@ export class EmployeeComponent {
   editId: string | null = null;
   displayDialog = false;
   searchText = '';
-
+  departments = [
+    { name: 'IT', value: 'IT' },
+    { name: 'HR', value: 'HR' },
+    { name: 'Finance', value: 'Finance' },
+    { name: 'Sales', value: 'Sales' },
+    { name: 'Marketing', value: 'Marketing' },
+  ];
+  roles = [
+    { name: 'Developer', value: 'Developer' },
+    { name: 'Manager', value: 'Manager' },
+    { name: 'HR', value: 'HR' },
+    { name: 'Tester', value: 'Tester' },
+    { name: 'Admin', value: 'Admin' },
+  ];
   ngOnInit() {
     this.loadEmployees();
   }
