@@ -11,6 +11,7 @@ import { AuthService } from '../⚙️services/auth.service';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
+  companyName = '';
   username = '';
   password = '';
   confirmPassword = '';
@@ -27,16 +28,19 @@ export class RegisterComponent {
       this.errorMessage = 'Password do not match!';
       return;
     }
-    this.authServices.registerApi(this.username, this.password).subscribe({
-      next: () => {
-        this.sucessMessage = 'Registration successful! Redirecting to login...';
-        setTimeout(() => {
-          this.router.navigate(['/login-page']);
-        }, 1500);
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Registration failed!';
-      },
-    });
+    this.authServices
+      .registerApi(this.companyName, this.username, this.password)
+      .subscribe({
+        next: () => {
+          this.sucessMessage =
+            'Registration successful! Redirecting to login...';
+          setTimeout(() => {
+            this.router.navigate(['/login-page']);
+          }, 1500);
+        },
+        error: (err) => {
+          this.errorMessage = err.error?.message || 'Registration failed!';
+        },
+      });
   }
 }

@@ -8,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Employee, EmployeeStatus } from '../👨‍💼employee/📦models/employee';
 import { EmployeeService } from '../⚙️services/employee.service';
+import { ToastService } from '../⚙️services/toast.service';
 import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -25,6 +26,7 @@ import { TagModule } from 'primeng/tag';
 import { DEPARTMENTS } from '../shared/constants/department.constants';
 import { ROLE } from '../shared/constants/role.constants';
 import { STATUS, STATUS_OPTIONS } from '../shared/constants/status.constants';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../shared/constants/message.constants';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -53,6 +55,7 @@ export class EmployeeComponent {
     private employeeService: EmployeeService,
     private messageService: MessageService,
     private confirmService: ConfirmationService,
+    private toastService: ToastService,
   ) {}
 
   employeeForm = new FormGroup({
@@ -76,20 +79,6 @@ export class EmployeeComponent {
   departments = DEPARTMENTS;
   roles = ROLE;
   statusList = STATUS_OPTIONS;
-  private showSuccess(detail: string) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail,
-    });
-  }
-  private showError(detail: string) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail,
-    });
-  }
 
   ngOnInit() {
     this.loadEmployees();
@@ -117,23 +106,32 @@ export class EmployeeComponent {
               if (index !== -1) {
                 this.employeeList[index] = updated;
               }
-              this.showSuccess('Employee Updated successfully');
+              this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_UPDATED)
               this.editId = null;
               this.employeeForm.reset();
               this.displayDialog = false;
             },
-            error: (err) => console.error('Update failed', err),
+            error: (err) => {console.error(err)
+              this.toastService.error(
+                err.error?.message || ERROR_MESSAGES.EMPLOYEE_UPDATE
+              )
+            },
           });
       } else {
         // Add new employee
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            this.showSuccess('Employee added successfully');
+            this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_CREATED)
             this.employeeForm.reset();
             this.displayDialog = false;
           },
-          error: (err) => console.error('Add failed', err),
+           error: (err) => {
+            console.error(err);
+            this.toastService.error(
+              err.error?.message || ERROR_MESSAGES.EMPLOYEE_CREATE
+            )
+          },
         });
       }
     }
@@ -160,10 +158,15 @@ export class EmployeeComponent {
         this.employeeService.deleteEmployee(id).subscribe({
           next: () => {
             this.employeeList = this.employeeList.filter((e) => e._id !== id);
-            this.showSuccess('Employee deleted successfully');
+            this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_DELETED);
             this.loadEmployees();
           },
-          error: (err) => console.error('Delete failed', err),
+          error: (err) => {
+            console.error(err);
+            this.toastService.error(
+              err.error?.message || ERROR_MESSAGES.EMPLOYEE_DELETE
+            )
+          },
         });
       },
     });
@@ -192,7 +195,7 @@ export class EmployeeComponent {
       },
       error: (err) => {
         console.error(err);
-        this.showError('Unable to load employees.');
+        this.toastService.error(ERROR_MESSAGES.EMPLOYEE_LOAD)
       },
       complete: () => {
         this.loading = false;
