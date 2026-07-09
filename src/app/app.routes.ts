@@ -6,6 +6,7 @@ import { DashboardComponent } from './📊dashboard/dashboard.component';
 import { RegisterComponent } from './📝register/register.component';
 import { authGuard } from '../app/🛡️auths/auth.guard';
 import { LayoutComponent } from './🖥️layout/layout.component';
+import { UserComponent } from './👥user/user/user.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'employee',
         component: EmployeeComponent,
+      },
+      {
+        path: 'users',
+        component: UserComponent,
       },
       {
         path: 'employee/:id',

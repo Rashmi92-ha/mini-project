@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/users`;
+  private apiUrl = `${environment.apiUrl}/api/auth`;
   private logoutTimer: any;
 
   constructor(
@@ -34,8 +34,9 @@ export class AuthService {
       );
   }
 
-  registerApi(username: string, password: string): Observable<any> {
+  registerApi(companyName: string, username: string, password: string): Observable<any> {
     return this.httpClient.post<any>(`${this.apiUrl}/register`, {
+      companyName,
       username,
       password,
     });
@@ -91,7 +92,7 @@ export class AuthService {
       return null;
     }
   }
-  
+
   refreshAccessToken(): Observable<boolean> {
     const refreshToken = this.getRefreshToken();
     return this.httpClient
