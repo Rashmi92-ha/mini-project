@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../../⚙️services/employee.service';
 import { Employee } from '../../👨‍💼employee/📦models/employee';
 import { UpperCasePipe } from '@angular/common';
+import { APP_ROUTES } from '../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-employee-details',
@@ -35,6 +36,6 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   backLogin() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([APP_ROUTES.DASHBOARD]);
   }
 }

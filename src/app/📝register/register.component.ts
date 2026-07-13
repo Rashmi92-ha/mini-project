@@ -5,6 +5,7 @@ import { AuthService } from '../⚙️services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
+import { APP_ROUTES } from '../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-register',
@@ -44,7 +45,7 @@ export class RegisterComponent {
           this.sucessMessage =
             'Registration successful! Redirecting to login...';
           setTimeout(() => {
-            this.router.navigate(['/login-page']);
+            this.router.navigate([APP_ROUTES.LOGIN]);
           }, 1500);
         },
         error: (err) => {

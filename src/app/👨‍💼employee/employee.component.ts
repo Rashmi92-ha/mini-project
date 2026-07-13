@@ -16,7 +16,6 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -30,7 +29,7 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../shared/constants/message.co
 @Component({
   selector: 'app-employee',
   standalone: true,
-  providers: [MessageService, ConfirmationService],
+  providers: [ConfirmationService],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -53,7 +52,6 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../shared/constants/message.co
 export class EmployeeComponent {
   constructor(
     private employeeService: EmployeeService,
-    private messageService: MessageService,
     private confirmService: ConfirmationService,
     private toastService: ToastService,
   ) {}

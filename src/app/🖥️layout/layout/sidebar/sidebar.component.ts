@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
-
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -15,27 +15,27 @@ export class SidebarComponent {
     {
       label: 'Dashboard',
       icon: 'pi pi-home',
-      routerLink: '/dashboard',
+      routerLink: APP_ROUTES.DASHBOARD,
     },
     {
       label: 'Employees',
       icon: 'pi pi-users',
-      routerLink: '/employee',
+      routerLink: APP_ROUTES.EMPLOYEES,
     },
     {
       label: 'Users',
       icon: 'pi pi-user',
-      routerLink: '/users',
+      routerLink: APP_ROUTES.USERS,
     },
     {
       label: 'Departments',
       icon: 'pi pi-building',
-      routerLink: '/departments',
+      routerLink: APP_ROUTES.DEPARTMENTS,
     },
     {
       label: 'Settings',
       icon: 'pi pi-cog',
-      routerLink: '/settings',
+      routerLink: APP_ROUTES.SETTINGS,
     },
   ];
 }

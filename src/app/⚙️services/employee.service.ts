@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Employee } from '../👨‍💼employee/📦models/employee';
-import { environment } from '../../environments/environment';
-
+import { API_ENPOINTS } from '../shared/constants/api.constants';
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeService {
-  private apiUrl = `${environment.apiUrl}/employees`;
+  private apiUrl = API_ENPOINTS.EMPLOYEE.BASE;
+
   constructor(private httpClient: HttpClient) {}
 
   getEmployee(): Observable<Employee[]> {
