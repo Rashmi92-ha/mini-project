@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { API_ENPOINTS } from '../shared/constants/api.constants';
 import { APP_ROUTES } from '../shared/constants/routes.constants';
+import { USER_ROLES } from '../shared/constants/userRole.constants';
 @Injectable({
   providedIn: 'root',
 })
@@ -90,6 +91,18 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+  }
+
+  getUserRole(): string| null{
+    return this.getTokenPayload()?.role ?? null;
+  }
+
+  isAdmin(): boolean {
+    return this.getUserRole() === USER_ROLES.ADMIN;
+  }
+
+  isUser(): boolean {
+    return this.getUserRole() === USER_ROLES.USER;
   }
 
   refreshAccessToken(): Observable<boolean> {
