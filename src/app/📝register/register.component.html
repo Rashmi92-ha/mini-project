@@ -1,18 +1,57 @@
 <div class="login-container">
-  <h2>Employee Management</h2>
-  <h4>Create Account</h4>
+  <h2>Create Account</h2>
 
-  <input type="text" placeholder="Username" [(ngModel)]="username" />
-  <input type="password" placeholder="Password" [(ngModel)]="password" />
-  <input type="password" placeholder="Confirm Password" [(ngModel)]="confirmPassword" />
+  <div class="field">
+    <p-floatLabel>
+      <input pInputText id="companyName" [(ngModel)]="companyName" />
+      <label for="companyName">Company Name</label>
+    </p-floatLabel>
+  </div>
 
-  <button (click)="register()">Register</button>
+  <div class="field">
+    <p-floatLabel>
+      <input pInputText id="username" [(ngModel)]="username" />
+      <label for="username">Username</label>
+    </p-floatLabel>
+  </div>
+
+  <div class="field">
+    <p-floatLabel>
+      <input pInputText type="password" id="password" [(ngModel)]="password" />
+      <label for="password">Password</label>
+    </p-floatLabel>
+  </div>
+
+  <div class="field">
+    <p-floatLabel>
+      <input
+        pInputText
+        type="password"
+        id="confirmPassword"
+        [(ngModel)]="confirmPassword"
+      />
+      <label for="confirmPassword">Confirm Password</label>
+    </p-floatLabel>
+  </div>
+
+  <p-button
+    label="Register"
+    icon="pi pi-user-plus"
+    styleClass="w-full"
+    (onClick)="register()"
+  >
+  </p-button>
 
   @if (errorMessage) {
-    <p style="color:red">{{ errorMessage }}</p>
+    <small class="error">{{ errorMessage }}</small>
   }
+
   @if (sucessMessage) {
-    <p style="color:green">{{ sucessMessage }}</p>
+    <small class="success">{{ sucessMessage }}</small>
   }
+
+  <p class="login-link">
+    Already have an account?
+    <a routerLink="/login-page">Login</a>
+  </p>
 </div>
-  <p>Already have an account? <a routerLink="/login-page">Login here</a></p>
