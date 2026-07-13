@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../⚙️services/auth.service';
+import { APP_ROUTES } from '../shared/constants/routes.constants';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService); // ✅ inject properly
@@ -10,6 +11,6 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true; // ✅ allow access
   }
 
-  router.navigate(['/login-page']); // ❌ redirect to login
+  router.navigate([APP_ROUTES.LOGIN]); // ❌ redirect to login
   return false;
 };

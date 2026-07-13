@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
-
+import { API_ENPOINTS } from '../shared/constants/api.constants';
+import { APP_ROUTES } from '../shared/constants/routes.constants';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/api/auth`;
   private logoutTimer: any;
 
   constructor(
@@ -22,7 +21,7 @@ export class AuthService {
   // 🔥 NEW — calls real backend to login
   loginApi(username: string, password: string): Observable<boolean> {
     return this.httpClient
-      .post<any>(`${this.apiUrl}/login`, { username, password })
+      .post<any>(API_ENPOINTS.AUTH.LOGIN, { username, password })
       .pipe(
         map((response) => {
           if (response.token && response.refreshToken) {
@@ -35,7 +34,7 @@ export class AuthService {
   }
 
   registerApi(companyName: string, username: string, password: string): Observable<any> {
-    return this.httpClient.post<any>(`${this.apiUrl}/register`, {
+    return this.httpClient.post<any>(API_ENPOINTS.AUTH.REGISTER, {
       companyName,
       username,
       password,
@@ -52,13 +51,13 @@ export class AuthService {
     const refreshToken = this.getRefreshToken();
     if (refreshToken) {
       this.httpClient
-        .post(`${this.apiUrl}/logout`, { refreshToken })
+        .post(API_ENPOINTS.AUTH.LOGOUT, { refreshToken })
         .subscribe();
     }
     localStorage.removeItem('token'); // ✅ remove token
     localStorage.removeItem('refreshToken');
     clearTimeout(this.logoutTimer);
-    this.router.navigate(['/login-page']);
+    this.router.navigate([APP_ROUTES.LOGIN]);
   }
 
   isLoggedIn(): boolean {
@@ -96,7 +95,7 @@ export class AuthService {
   refreshAccessToken(): Observable<boolean> {
     const refreshToken = this.getRefreshToken();
     return this.httpClient
-      .post<any>(`${this.apiUrl}/refresh`, { refreshToken })
+      .post<any>(API_ENPOINTS.AUTH.REFRESH, { refreshToken })
       .pipe(
         map((response) => {
           if (response.token) {

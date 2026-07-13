@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { User } from '../👥user/models/user';
+import { API_ENPOINTS } from '../shared/constants/api.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = `${environment.apiUrl}/api/auth/users`;
+  private apiUrl = API_ENPOINTS.AUTH.USERS;
   constructor(private httpClient: HttpClient) {}
 
   getUsers(): Observable<User[]> {
