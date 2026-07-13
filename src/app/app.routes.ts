@@ -4,7 +4,8 @@ import { EmployeeDetailsComponent } from './👨‍💼employee/👨‍💼emplo
 import { LoginComponent } from './🔐login/login.component';
 import { DashboardComponent } from './📊dashboard/dashboard.component';
 import { RegisterComponent } from './📝register/register.component';
-import { authGuard } from '../app/🛡️auths/auth.guard';
+import { authGuard } from './shared/guards/auth.guard';
+import { adminGuard } from './shared/guards/admin.guard';
 import { LayoutComponent } from './🖥️layout/layout.component';
 import { UserComponent } from './👥user/user/user.component';
 
@@ -39,6 +40,7 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UserComponent,
+        canActivate: [adminGuard],
       },
       {
         path: 'employee/:id',
