@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../⚙️services/auth.service';
+import { AuthService } from '../../../core/⚙️services/auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
-import { APP_ROUTES } from '../shared/constants/routes.constants';
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-register',

@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import { EmployeeComponent } from './👨‍💼employee/employee.component';
-import { EmployeeDetailsComponent } from './👨‍💼employee/👨‍💼employee-details/employee-details.component';
-import { LoginComponent } from './🔐login/login.component';
-import { DashboardComponent } from './📊dashboard/dashboard.component';
-import { RegisterComponent } from './📝register/register.component';
-import { authGuard } from './shared/guards/auth.guard';
-import { adminGuard } from './shared/guards/admin.guard';
-import { LayoutComponent } from './🖥️layout/layout.component';
-import { UserComponent } from './👥user/user/user.component';
+import { EmployeeComponent } from './features/👨‍💼employee/employee.component';
+import { EmployeeDetailsComponent } from './features/👨‍💼employee/👨‍💼employee-details/employee-details.component';
+import { LoginComponent } from './features/authentication/🔐login/login.component';
+import { DashboardComponent } from './features/📊dashboard/dashboard.component';
+import { RegisterComponent } from './features/authentication/📝register/register.component';
+import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
+import { LayoutComponent } from './core/🖥️layout/layout.component';
+import { UserComponent } from './features/👥user/user/user.component';
 
 export const routes: Routes = [
   {

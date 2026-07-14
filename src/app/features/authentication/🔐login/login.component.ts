@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../⚙️services/auth.service';
+import { AuthService } from '../../../core/⚙️services/auth.service';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { APP_ROUTES } from '../shared/constants/routes.constants';
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-login',

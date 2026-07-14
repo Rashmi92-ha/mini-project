@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
-import { API_ENPOINTS } from '../shared/constants/api.constants';
-import { APP_ROUTES } from '../shared/constants/routes.constants';
-import { USER_ROLES } from '../shared/constants/userRole.constants';
+import { API_ENPOINTS } from '../../shared/constants/api.constants';
+import { APP_ROUTES } from '../../shared/constants/routes.constants';
+import { USER_ROLES } from '../../shared/constants/userRole.constants';
 @Injectable({
   providedIn: 'root',
 })
