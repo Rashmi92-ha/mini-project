@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EmployeeService } from '../⚙️services/employee.service';
+import { EmployeeService } from '../../core/⚙️services/employee.service';
 import { Employee } from '../👨‍💼employee/📦models/employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../⚙️services/auth.service'; // ✅ added
+import { AuthService } from '../../core/⚙️services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private employeeService: EmployeeService,
-    private authService: AuthService, // ✅ added
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {

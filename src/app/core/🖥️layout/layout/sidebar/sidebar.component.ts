@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuItem } from 'primeng/api';
-import { APP_ROUTES } from '../../../shared/constants/routes.constants';
+import { APP_ROUTES } from '../../../../shared/constants/routes.constants';
 import { AuthService } from '../../../⚙️services/auth.service';
 @Component({
   selector: 'app-sidebar',

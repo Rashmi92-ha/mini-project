@@ -7,8 +7,8 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Employee, EmployeeStatus } from '../👨‍💼employee/📦models/employee';
-import { EmployeeService } from '../⚙️services/employee.service';
-import { ToastService } from '../⚙️services/toast.service';
+import { EmployeeService } from '../../core/⚙️services/employee.service';
+import { ToastService } from '../../core/⚙️services/toast.service';
 import { RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -22,10 +22,10 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
-import { DEPARTMENTS } from '../shared/constants/department.constants';
-import { ROLE } from '../shared/constants/role.constants';
-import { STATUS, STATUS_OPTIONS } from '../shared/constants/status.constants';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../shared/constants/message.constants';
+import { DEPARTMENTS } from '../../shared/constants/department.constants';
+import { ROLE } from '../../shared/constants/role.constants';
+import { STATUS, STATUS_OPTIONS } from '../../shared/constants/status.constants';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../shared/constants/message.constants';
 @Component({
   selector: 'app-employee',
   standalone: true,

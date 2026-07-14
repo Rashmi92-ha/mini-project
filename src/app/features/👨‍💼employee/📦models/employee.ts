@@ -1,4 +1,4 @@
-import { STATUS } from '../../shared/constants/status.constants';
+import { STATUS } from "../../../shared/constants/status.constants";
 
 export type EmployeeStatus =
   (typeof STATUS)[keyof typeof STATUS];

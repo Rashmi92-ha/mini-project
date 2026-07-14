@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EmployeeService } from '../../⚙️services/employee.service';
+import { EmployeeService } from '../../../core/⚙️services/employee.service';
 import { Employee } from '../../👨‍💼employee/📦models/employee';
 import { UpperCasePipe } from '@angular/common';
-import { APP_ROUTES } from '../../shared/constants/routes.constants';
+import { APP_ROUTES } from '../../../shared/constants/routes.constants';
 
 @Component({
   selector: 'app-employee-details',

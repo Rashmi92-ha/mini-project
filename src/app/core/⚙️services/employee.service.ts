@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Employee } from '../👨‍💼employee/📦models/employee';
-import { API_ENPOINTS } from '../shared/constants/api.constants';
+import { Employee } from '../../features/👨‍💼employee/📦models/employee';
+import { API_ENPOINTS } from '../../shared/constants/api.constants';
 @Injectable({
   providedIn: 'root',
 })

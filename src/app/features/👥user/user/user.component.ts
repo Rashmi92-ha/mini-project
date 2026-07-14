@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
-import { UserService } from '../../⚙️services/user.service';
-import { ToastService } from '../../⚙️services/toast.service';
-import {
-  SUCCESS_MESSAGES,
-  ERROR_MESSAGES,
-} from '../../shared/constants/message.constants';
+import { UserService } from '../../../core/⚙️services/user.service';
+import { ToastService } from '../../../core/⚙️services/toast.service';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../../shared/constants/message.constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../models/user';
 import { TableModule } from 'primeng/table';
@@ -24,7 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import {
   USER_ROLES,
   USER_ROLE_OPTIONS,
-} from '../../shared/constants/userRole.constants';
+} from '../../../shared/constants/userRole.constants';
 @Component({
   selector: 'app-user',
   standalone: true,
