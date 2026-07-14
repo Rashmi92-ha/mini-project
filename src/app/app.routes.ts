@@ -1,13 +1,8 @@
 import { Routes } from '@angular/router';
-import { EmployeeComponent } from './features/👨‍💼employee/employee.component';
-import { EmployeeDetailsComponent } from './features/👨‍💼employee/👨‍💼employee-details/employee-details.component';
-import { LoginComponent } from './features/authentication/🔐login/login.component';
-import { DashboardComponent } from './features/📊dashboard/dashboard.component';
-import { RegisterComponent } from './features/authentication/📝register/register.component';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { LayoutComponent } from './core/🖥️layout/layout.component';
-import { UserComponent } from './features/👥user/user/user.component';
+import { APP_ROUTES } from './shared/constants/routes.constants';
 
 export const routes: Routes = [
   {
@@ -16,12 +11,18 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'login-page',
-    component: LoginComponent,
+    path: APP_ROUTES.LOGIN,
+    loadComponent: () =>
+      import('./features/authentication/🔐login/login.component').then(
+        (m) => m.LoginComponent,
+      ),
   },
   {
-    path: 'register',
-    component: RegisterComponent,
+    path: APP_ROUTES.REGISTER,
+    loadComponent: () =>
+      import('./features/authentication/📝register/register.component').then(
+        (m) => m.RegisterComponent,
+      ),
   },
   {
     path: '',
@@ -29,22 +30,27 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path: APP_ROUTES.DASHBOARD,
+        loadComponent: () =>
+          import('./features/📊dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent,
+          ),
       },
 
       {
-        path: 'employee',
-        component: EmployeeComponent,
+        path: APP_ROUTES.EMPLOYEES,
+        loadChildren: () =>
+          import('./features/👨‍💼employee/employee.routes').then(
+            (m) => m.EMPLOYEE_ROUTES,
+          ),
       },
       {
-        path: 'users',
-        component: UserComponent,
+        path: APP_ROUTES.USERS,
+        loadComponent: () =>
+          import('./features/👥user/user/user.component').then(
+            (m) => m.UserComponent,
+          ),
         canActivate: [adminGuard],
-      },
-      {
-        path: 'employee/:id',
-        component: EmployeeDetailsComponent,
       },
     ],
   },
