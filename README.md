@@ -20,7 +20,9 @@ A responsive employee management dashboard built with Angular, with secure JWT-b
 - **Route Guards:** protects pages from unauthenticated access
 - **Dynamic data tables:** employee records loaded from the REST API
 - **Responsive dashboard** layout
-- [Add: search / filter / pagination / add-edit-delete employee, if you built them]
+- **Reactive search:** RxJS-powered search using `debounceTime` and `distinctUntilChanged`, applied to the loaded employee list
+- **Filtering:** client-side filtering by [department / role / status]
+- **Pagination:** client-side pagination of the loaded data
 
 ## 🛠️ Tech Stack
 
