@@ -1,4 +1,4 @@
-# 📊 Employee Management System (Angular Frontend)
+<img width="296" height="331" alt="image" src="https://github.com/user-attachments/assets/3d723a52-8010-4b0b-a2d4-566e2debdf35" /># 📊 Employee Management System (Angular Frontend)
 
 A responsive employee management dashboard built with Angular, with secure JWT-based authentication and a REST API backend.
 
@@ -11,7 +11,8 @@ A responsive employee management dashboard built with Angular, with secure JWT-b
 ## 📸 Screenshots
 
 ![Dashboard](./screenshots/dashboard.png)
-![Login](./screenshots/login.png)
+![Login](<img width="296" height="331" alt="image" src="https://github.com/user-attachments/assets/e99862c8-c7e0-4d02-a887-ebff5c50a7ad" />
+)
 
 ## ✨ Features
 
@@ -47,23 +48,30 @@ graph LR
 
 ### Run locally
 ​```bash
+
 git clone https://github.com/Rashmi92-ha/mini-project.git
+
 cd mini-project
+
 npm install
+
 ng serve
 ​```
 Open `http://localhost:4200/`.
 
 ### Connect to the backend
-Update the API base URL in `[path of your environment/service file]` to either the live API or your local backend (`http://localhost:[port]`).
+Update the API base URL in `[src/environments/environment.ts]` to either the live API or your local backend (`(http://localhost:5000)`).
 
 ## 📁 Project Structure
 
 ​```
 src/app/
 ├── [components/]   # UI components
+
 ├── [services/]     # API and auth services
+
 ├── [guards/]       # Route guards
+
 └── [interceptors/] # JWT HTTP interceptor
 ​```
 
@@ -71,7 +79,7 @@ src/app/
 
 - Implementing token-based authentication end to end
 - Using interceptors and guards to keep auth logic out of components
-- [Add one more point from your own experience]
+- Add proper error handling and user-friendly error messages for API failures, validation errors, and network issues.
 
 ---
 Built with Angular CLI 17.3.17 · [Rashmi K S](https://www.linkedin.com/in/rashmiks-dev/)
