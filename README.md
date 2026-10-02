@@ -1,28 +1,75 @@
-# mini-project
-# EmployeeManagement
+# 📊 Employee Management System (Angular Frontend)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+A responsive employee management dashboard built with Angular, with secure JWT-based authentication and a REST API backend.
 
-## Development server
+🌐 **Live Demo:** [mini-project-iota-rosy.vercel.app](https://mini-project-iota-rosy.vercel.app)
+⚙️ **Backend Repository:** [mini-project-backend](https://github.com/Rashmi92-ha/mini-project-backend)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+> ⏳ The backend runs on a free hosting tier, so the first request after inactivity may take 30–60 seconds. Please wait for the first load to complete.
+> 🔑 **Demo login:** `demo@example.com` / `Demo@123`
 
-## Code scaffolding
+## 📸 Screenshots
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Dashboard](./screenshots/dashboard.png)
+![Login](./screenshots/login.png)
 
-## Build
+## ✨ Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **JWT authentication:** secure login with the token attached to outgoing requests
+- **HTTP Interceptor:** automatically adds the JWT to API calls
+- **Route Guards:** protects pages from unauthenticated access
+- **Dynamic data tables:** employee records loaded from the REST API
+- **Responsive dashboard** layout
+- [Add: search / filter / pagination / add-edit-delete employee, if you built them]
 
-## Running unit tests
+## 🛠️ Tech Stack
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Frontend:** Angular 17, TypeScript, RxJS, HTML5, CSS3
+- **Backend:** Node.js, Express, MongoDB (see the [backend repo](https://github.com/Rashmi92-ha/mini-project-backend))
+- **Deployment:** Vercel (frontend), Render (backend)
 
-## Running end-to-end tests
+## 🏗️ Architecture
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+​```mermaid
+graph LR
+    U[User] --> F[Angular Frontend]
+    F -- REST API / JWT --> S[Node + Express Backend]
+    S --> DB[(MongoDB)]
+​```
 
-## Further help
+## 🚀 Getting Started
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Prerequisites
+- Node.js (LTS) and npm
+- Angular CLI: `npm install -g @angular/cli`
+
+### Run locally
+​```bash
+git clone https://github.com/Rashmi92-ha/mini-project.git
+cd mini-project
+npm install
+ng serve
+​```
+Open `http://localhost:4200/`.
+
+### Connect to the backend
+Update the API base URL in `[path of your environment/service file]` to either the live API or your local backend (`http://localhost:[port]`).
+
+## 📁 Project Structure
+
+​```
+src/app/
+├── [components/]   # UI components
+├── [services/]     # API and auth services
+├── [guards/]       # Route guards
+└── [interceptors/] # JWT HTTP interceptor
+​```
+
+## 📚 What I Learned
+
+- Implementing token-based authentication end to end
+- Using interceptors and guards to keep auth logic out of components
+- [Add one more point from your own experience]
+
+---
+Built with Angular CLI 17.3.17 · [Rashmi K S](https://www.linkedin.com/in/rashmiks-dev/)
