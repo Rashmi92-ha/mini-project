@@ -1,4 +1,4 @@
-<img width="296" height="331" alt="image" src="https://github.com/user-attachments/assets/3d723a52-8010-4b0b-a2d4-566e2debdf35" /># 📊 Employee Management System (Angular Frontend)
+# 📊 Employee Management System (Angular Frontend)
 
 A responsive employee management dashboard built with Angular, with secure JWT-based authentication and a REST API backend.
 
