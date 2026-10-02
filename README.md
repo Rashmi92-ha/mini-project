@@ -11,8 +11,8 @@ A responsive employee management dashboard built with Angular, with secure JWT-b
 ## 📸 Screenshots
 
 ![Dashboard](./screenshots/dashboard.png)
-![Login](<img width="296" height="331" alt="image" src="https://github.com/user-attachments/assets/e99862c8-c7e0-4d02-a887-ebff5c50a7ad" />
-)
+![Login] <img width="296" height="331" alt="image" src="https://github.com/user-attachments/assets/d48a6f02-95ec-4253-ad65-771bfc019301" />
+
 
 ## ✨ Features
 
