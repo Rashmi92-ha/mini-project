@@ -30,7 +30,7 @@ A responsive employee management dashboard built with Angular, with secure JWT-b
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Angular 17, TypeScript, RxJS, HTML5, CSS3
+- **Frontend:** Angular 20, TypeScript, RxJS, HTML5, CSS3
 - **Backend:** Node.js, Express, MongoDB (see the [backend repo](https://github.com/Rashmi92-ha/mini-project-backend))
 - **Deployment:** Vercel (frontend), Render (backend)
 
@@ -85,4 +85,4 @@ src/app/
 - Add proper error handling and user-friendly error messages for API failures, validation errors, and network issues.
 
 ---
-Built with Angular CLI 17.3.17 · [Rashmi K S](https://www.linkedin.com/in/rashmiks-dev/)
+Built with Angular 20 · [Rashmi K S](https://www.linkedin.com/in/rashmiks-dev/)
