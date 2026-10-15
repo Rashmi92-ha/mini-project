@@ -23,6 +23,7 @@ export const ERROR_MESSAGES = {
 
   INVOICE_CREATION_FAILD: 'Failed to create invoice.',
   INVOICE_LOADING_FAILD: 'Failed to load invoices',
+  INVALID_ID: 'Invalid invoice ID.',
 } as const;
 
 export const REQUIRED_MESSAGES = { 
