@@ -9,6 +9,7 @@ export const API_ENPOINTS = {
         REFRESH: `${API_BASE_URL}/api/auth/refresh`,
         LOGOUT:`${API_BASE_URL}/api/auth/logout`,
         USERS: `${API_BASE_URL}/api/auth/users`,
+        INVOICE:`${API_BASE_URL}/api/invoices`,
     },
     EMPLOYEE: {
         BASE: `${API_BASE_URL}/employees`,

@@ -1,6 +1,10 @@
 <div class="invoice-container">
-  <h2>Invoice List</h2>
-  <div class="invoice-actions">
+  <div class="page-header">
+    <div>
+      <h1>Invoice Management</h1>
+      <p class="page-subtitle">Manage and track your invoices</p>
+    </div>
+
     <button
       pButton
       type="button"
@@ -13,114 +17,138 @@
   <p-toast position="top-right"></p-toast>
 
   <p-dialog
-    header="Add New Invoice"
+    [header]="editingInvoiceId ? 'Edit Invoice' : 'Add New Invoice'"
     [(visible)]="showInvoiceDialog"
     [modal]="true"
-    [style]="{ width: '550px' }"
+    [style]="{ width: '550px', maxWidth: '95vw' }"
     [draggable]="false"
+    [resizable]="false"
   >
     <form (ngSubmit)="saveInvoice()" #invoiceForm="ngForm">
-      <div class="form-field">
-        <label for="invoiceNumber">Invoice Number *</label>
-        <input
-          pInputText
-          id="invoiceNumber"
-          name="invoiceNumber"
-          [(ngModel)]="newInvoice.invoiceNumber"
-          required
-        />
-      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="invoiceNumber">Invoice Number *</label>
+          <input
+            pInputText
+            id="invoiceNumber"
+            name="invoiceNumber"
+            [(ngModel)]="newInvoice.invoiceNumber"
+            required
+            #invoiceNumber="ngModel"
+            placeholder="e.g. INV-1001"
+          />
+          <small
+            class="field-error"
+            *ngIf="invoiceNumber.invalid && invoiceNumber.touched"
+          >
+            Invoice number is required.
+          </small>
+        </div>
 
-      <div class="form-field">
-        <label for="supplierName">Supplier Name *</label>
-        <input
-          pInputText
-          id="supplierName"
-          name="supplierName"
-          [(ngModel)]="newInvoice.supplierName"
-          required
-        />
-      </div>
+        <div class="form-field">
+          <label for="supplierName">Supplier Name *</label>
+          <input
+            pInputText
+            id="supplierName"
+            name="supplierName"
+            [(ngModel)]="newInvoice.supplierName"
+            required
+            #supplierName="ngModel"
+            placeholder="Enter supplier name"
+          />
+          <small
+            class="field-error"
+            *ngIf="supplierName.invalid && supplierName.touched"
+          >
+            Supplier name is required.
+          </small>
+        </div>
 
-      <div class="form-field">
-        <label for="invoiceDate">Invoice Date *</label>
-        <input
-          type="date"
-          id="invoiceDate"
-          name="invoiceDate"
-          [(ngModel)]="newInvoice.invoiceDate"
-          required
-        />
-      </div>
+        <div class="form-field">
+          <label for="invoiceDate">Invoice Date *</label>
+          <input
+            pInputText
+            type="date"
+            id="invoiceDate"
+            name="invoiceDate"
+            [(ngModel)]="newInvoice.invoiceDate"
+            required
+          />
+        </div>
 
-      <div class="form-field">
-        <label for="dueDate">Due Date</label>
-        <input
-          type="date"
-          id="dueDate"
-          name="dueDate"
-          [(ngModel)]="newInvoice.dueDate"
-        />
-      </div>
+        <div class="form-field">
+          <label for="dueDate">Due Date</label>
+          <input
+            pInputText
+            type="date"
+            id="dueDate"
+            name="dueDate"
+            [(ngModel)]="newInvoice.dueDate"
+          />
+        </div>
 
-      <div class="form-field">
-        <label for="amount">Amount *</label>
-        <input
-          type="number"
-          id="amount"
-          name="amount"
-          [(ngModel)]="newInvoice.amount"
-          min="0"
-          required
-        />
-      </div>
+        <div class="form-field">
+          <label for="amount">Amount *</label>
+          <input
+            pInputText
+            type="number"
+            id="amount"
+            name="amount"
+            [(ngModel)]="newInvoice.amount"
+            min="0"
+            required
+          />
+        </div>
 
-      <div class="form-field">
-        <label for="tax">Tax</label>
-        <input
-          type="number"
-          id="tax"
-          name="tax"
-          [(ngModel)]="newInvoice.tax"
-          min="0"
-        />
-      </div>
+        <div class="form-field">
+          <label for="tax">Tax</label>
+          <input
+            pInputText
+            type="number"
+            id="tax"
+            name="tax"
+            [(ngModel)]="newInvoice.tax"
+            min="0"
+          />
+        </div>
 
-      <div class="form-field">
-        <label for="currency">Currency</label>
-        <input
-          pInputText
-          id="currency"
-          name="currency"
-          [(ngModel)]="newInvoice.currency"
-          required
-        />
-      </div>
+        <div class="form-field">
+          <label for="currency">Currency *</label>
+          <input
+            pInputText
+            id="currency"
+            name="currency"
+            [(ngModel)]="newInvoice.currency"
+            required
+            placeholder="INR"
+          />
+        </div>
 
-      <div class="form-field">
-        <label for="status">Status</label>
-        <select id="status" name="status" [(ngModel)]="newInvoice.status">
-          <option value="Pending">Pending</option>
-          <option value="Paid">Paid</option>
-          <option value="Overdue">Overdue</option>
-        </select>
+        <div class="form-field">
+          <label for="status">Status</label>
+          <select id="status" name="status" [(ngModel)]="newInvoice.status">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Overdue">Overdue</option>
+          </select>
+        </div>
       </div>
-
-      <p-toast position="top-right"></p-toast>
 
       <div class="form-actions">
         <button
           pButton
           type="button"
           label="Cancel"
+          icon="pi pi-times"
           severity="secondary"
           (click)="showInvoiceDialog = false"
+          [disabled]="saving"
         ></button>
 
         <button
           pButton
           type="submit"
-          label="Save Invoice"
+          [label]="editingInvoiceId ? 'Update Invoice' : 'Save Invoice'"
           icon="pi pi-check"
           [loading]="saving"
           [disabled]="saving || invoiceForm.invalid"
@@ -128,11 +156,12 @@
       </div>
     </form>
   </p-dialog>
-  <p *ngIf="loading">Loading invoices...</p>
 
-  <p *ngIf="errorMessage" class="error">
+  <div class="loading-state" *ngIf="loading">Loading invoices...</div>
+
+  <div class="error-state" *ngIf="!loading && errorMessage">
     {{ errorMessage }}
-  </p>
+  </div>
 
   <div class="table-wrapper" *ngIf="!loading && !errorMessage">
     <table>
@@ -144,21 +173,54 @@
           <th>Amount</th>
           <th>Tax</th>
           <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let invoice of invoices">
-          <td>{{ invoice.invoiceNumber }}</td>
+          <td class="invoice-number">
+            {{ invoice.invoiceNumber }}
+          </td>
+
           <td>{{ invoice.supplierName }}</td>
+
           <td>{{ invoice.invoiceDate | date: "mediumDate" }}</td>
-          <td>{{ invoice.amount | currency: invoice.currency }}</td>
-          <td>{{ invoice.tax | currency: invoice.currency }}</td>
-          <td>{{ invoice.status }}</td>
+
+          <td class="amount-cell">
+            {{ invoice.amount | currency: invoice.currency }}
+          </td>
+
+          <td>
+            {{ invoice.tax | currency: invoice.currency }}
+          </td>
+
+          <td>
+            <span
+              class="status-badge"
+              [ngClass]="'status-' + invoice.status.toLowerCase()"
+            >
+              {{ invoice.status }}
+            </span>
+          </td>
+
+          <td>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-pencil"
+              label="Edit"
+              severity="secondary"
+              [text]="true"
+              (click)="editInvoice(invoice)"
+            ></button>
+          </td>
         </tr>
 
         <tr *ngIf="invoices.length === 0">
-          <td colspan="6">No invoices found.</td>
+          <td colspan="7" class="empty-state">
+            No invoices found. Click "Add Invoice" to create your first invoice.
+          </td>
         </tr>
       </tbody>
     </table>

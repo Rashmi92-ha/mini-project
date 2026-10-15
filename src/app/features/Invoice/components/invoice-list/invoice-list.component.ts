@@ -7,8 +7,25 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ToastService } from '../../../../core/⚙️services/toast.service';
 import { ToastModule } from 'primeng/toast';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES,REQUIRED_MESSAGES } from '../../../../shared/constants/message.constants';
-
+import {
+  SUCCESS_MESSAGES,
+  ERROR_MESSAGES,
+  REQUIRED_MESSAGES,
+} from '../../../../shared/constants/message.constants';
+import {
+  NEW_INVOICE,
+  OPEN_DIALOG,
+} from '../../../../shared/constants/invoice.constants';
+type InvoiceForm = {
+  invoiceNumber: string;
+  supplierName: string;
+  invoiceDate: string;
+  dueDate: string;
+  amount: number;
+  tax: number;
+  currency: string;
+  status: 'Pending' | 'Paid' | 'Overdue';
+};
 @Component({
   selector: 'app-invoice-list',
   standalone: true,
@@ -17,7 +34,7 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES,REQUIRED_MESSAGES } from '../../../../
   styleUrl: './invoice-list.component.scss',
 })
 export class InvoiceListComponent implements OnInit {
-  constructor(public toastMessageService: ToastService){}
+  constructor(public toastMessageService: ToastService) {}
   private invoiceService = inject(InvoiceService);
 
   invoices: Invoice[] = [];
@@ -25,34 +42,20 @@ export class InvoiceListComponent implements OnInit {
   errorMessage = '';
   showInvoiceDialog = false;
   saving = false;
+  editingInvoiceId: string | null = null;
 
   ngOnInit(): void {
     this.loadInvoices();
   }
 
-  newInvoice = {
-    invoiceNumber: '',
-    supplierName: '',
-    invoiceDate: '',
-    dueDate: '',
-    amount: 0,
-    tax: 0,
-    currency: 'INR',
-    status: 'Pending' as 'Pending' | 'Paid' | 'Overdue',
-  };
+  newInvoice: InvoiceForm = { ...NEW_INVOICE };
 
   openInvoiceDialog(): void {
+    this.editingInvoiceId = null;
     this.newInvoice = {
-      invoiceNumber: '',
-      supplierName: '',
-      invoiceDate: '',
-      dueDate: '',
-      amount: 0,
-      tax: 0,
-      currency: 'INR',
+      ...OPEN_DIALOG,
       status: 'Pending',
     };
-
     this.showInvoiceDialog = true;
   }
 
@@ -70,26 +73,39 @@ export class InvoiceListComponent implements OnInit {
 
     this.saving = true;
 
-    this.invoiceService
-      .createInvoice({
-        ...this.newInvoice,
-        dueDate: this.newInvoice.dueDate || null,
-      })
-      .subscribe({
-        next: () => {
-          this.saving = false;
-          this.showInvoiceDialog = false;
-          this.toastMessageService.success(SUCCESS_MESSAGES.INVOICE_CREATED);
-          this.loadInvoices();
-        },
+    const invoiceData = {
+      ...this.newInvoice,
+      dueDate: this.newInvoice.dueDate || null,
+    };
 
-        error: (err) => {
-          this.saving = false;
-          this.toastMessageService.error(
-            err.error?.message || ERROR_MESSAGES.INVOICE_CREATION_FAILD
-          );
-        },
-      });
+    const request = this.editingInvoiceId
+      ? this.invoiceService.updateInvoice(this.editingInvoiceId, invoiceData)
+      : this.invoiceService.createInvoice(invoiceData);
+
+    request.subscribe({
+      next: () => {
+        this.saving = false;
+        this.showInvoiceDialog = false;
+
+        if (this.editingInvoiceId) {
+          this.toastMessageService.success(SUCCESS_MESSAGES.INVOICE_UPDATED);
+        } else {
+          this.toastMessageService.success(SUCCESS_MESSAGES.INVOICE_CREATED);
+        }
+
+        this.editingInvoiceId = null;
+        this.loadInvoices();
+      },
+      error: (err) => {
+        this.saving = false;
+        this.toastMessageService.error(
+          err.error?.message ||
+            (this.editingInvoiceId
+              ? 'Failed to update invoice'
+              : ERROR_MESSAGES.INVOICE_CREATION_FAILD),
+        );
+      },
+    });
   }
 
   loadInvoices(): void {
@@ -103,10 +119,30 @@ export class InvoiceListComponent implements OnInit {
       },
       error: (err) => {
         this.toastMessageService.error(
-          err.error?.message|| ERROR_MESSAGES.INVOICE_LOADING_FAILD
+          err.error?.message || ERROR_MESSAGES.INVOICE_LOADING_FAILD,
         );
         this.loading = false;
       },
     });
+  }
+
+  editInvoice(invoice: Invoice): void {
+    if (!invoice._id) {
+      this.toastMessageService.error(ERROR_MESSAGES.INVALID_ID);
+      return;
+    }
+
+    this.editingInvoiceId = invoice._id;
+    this.newInvoice = {
+      invoiceNumber: invoice.invoiceNumber,
+      supplierName: invoice.supplierName,
+      invoiceDate: invoice.invoiceDate.substring(0, 10),
+      dueDate: invoice.dueDate ? invoice.dueDate.substring(0, 10) : '',
+      amount: invoice.amount,
+      tax: invoice.tax,
+      currency: invoice.currency,
+      status: invoice.status,
+    };
+    this.showInvoiceDialog = true;
   }
 }
