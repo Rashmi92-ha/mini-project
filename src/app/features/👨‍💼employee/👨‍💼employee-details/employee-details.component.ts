@@ -36,6 +36,6 @@ export class EmployeeDetailsComponent implements OnInit {
   }
 
   backLogin() {
-    this.router.navigate([APP_ROUTES.DASHBOARD]);
+    this.router.navigate([APP_ROUTES.EMPLOYEES]);
   }
 }

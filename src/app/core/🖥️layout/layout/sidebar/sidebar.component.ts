@@ -29,6 +29,11 @@ export class SidebarComponent {
         icon: 'pi pi-users',
         routerLink: APP_ROUTES.EMPLOYEES,
       },
+      {
+        label: 'Invoices',
+        icon: 'pi pi-file',
+        routerLink: APP_ROUTES.INVOICE,
+      }
     ];
     if (isAdmin) {
       this.items.push({
