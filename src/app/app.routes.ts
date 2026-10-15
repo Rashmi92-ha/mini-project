@@ -3,15 +3,18 @@ import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { LayoutComponent } from './core/🖥️layout/layout.component';
 import { APP_ROUTES } from './shared/constants/routes.constants';
+import { guestGuard } from './core/guards/guest.guard';
+import { blockBrowserNavGuard } from './core/guards/block-browser-nav.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login-page',
+    redirectTo: APP_ROUTES.LOGIN,
     pathMatch: 'full',
   },
   {
     path: APP_ROUTES.LOGIN,
+    canActivate: [guestGuard],
     loadComponent: () =>
       import('./features/authentication/🔐login/login.component').then(
         (m) => m.LoginComponent,
@@ -19,6 +22,7 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.REGISTER,
+    canActivate: [guestGuard],
     loadComponent: () =>
       import('./features/authentication/📝register/register.component').then(
         (m) => m.RegisterComponent,
@@ -28,6 +32,7 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [authGuard],
+    canActivateChild: [authGuard, blockBrowserNavGuard],
     children: [
       {
         path: APP_ROUTES.DASHBOARD,
@@ -52,6 +57,17 @@ export const routes: Routes = [
           ),
         canActivate: [adminGuard],
       },
+      {
+        path: APP_ROUTES.INVOICE,
+        loadComponent: () =>
+          import('./features/Invoice/components/invoice-list/invoice-list.component').then(
+            (m) => m.InvoiceListComponent,
+          ),
+      },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: APP_ROUTES.LOGIN,
   },
 ];

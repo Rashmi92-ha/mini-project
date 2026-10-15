@@ -3,14 +3,15 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../⚙️services/auth.service';
 import { APP_ROUTES } from '../../shared/constants/routes.constants';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService); // ✅ inject properly
+export const authGuard: CanActivateFn = (_route, state) => {
+  const authService = inject(AuthService);
   const router = inject(Router);
-  
+
   if (authService.isLoggedIn()) {
-    return true; // ✅ allow access
+    return true;
   }
 
-  router.navigate([APP_ROUTES.LOGIN]); // ❌ redirect to login
-  return false;
+  return router.createUrlTree([APP_ROUTES.LOGIN], {
+    queryParams: { returnUrl: state.url },
+  });
 };
