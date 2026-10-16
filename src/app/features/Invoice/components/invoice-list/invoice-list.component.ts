@@ -70,6 +70,8 @@ export class InvoiceListComponent implements OnInit {
   saving = false;
   editingInvoiceId: string | null = null;
   newInvoice: InvoiceForm = { ...NEW_INVOICE };
+  sortField = 'createdAt';
+  sortOrder = -1;
 
   searchTerm = '';
   selectedStatus = 'All';
@@ -98,6 +100,8 @@ export class InvoiceListComponent implements OnInit {
               this.pageSize,
               this.searchTerm.trim(),
               this.selectedStatus,
+              this.sortField,
+              this.sortOrder,
             )
             .pipe(
               catchError((err: HttpErrorResponse) => {
@@ -152,6 +156,13 @@ export class InvoiceListComponent implements OnInit {
   onLazyLoad(event: TableLazyLoadEvent): void {
     this.pageSize = event.rows ?? this.pageSize;
     this.currentPage = Math.floor((event.first ?? 0) / this.pageSize) + 1;
+    if (typeof event.sortField === 'string' && event.sortField) {
+      this.sortField = event.sortField;
+    }
+
+    if (event.sortOrder === 1 || event.sortOrder === -1) {
+      this.sortOrder = event.sortOrder;
+    }
     this.loadInvoices();
   }
 
