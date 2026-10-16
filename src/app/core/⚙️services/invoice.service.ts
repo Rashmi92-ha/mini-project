@@ -26,8 +26,20 @@ export class InvoiceService {
     limit = 10,
     search = '',
     status = 'All',
-  ): Observable<{ invoices: Invoice[]; total: number }> {
-    let params = new HttpParams().set('page', page).set('limit', limit);
+    sortField = 'createdAt',
+    sortOrder = -1,
+  ): Observable<{
+    invoices: Invoice[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('limit', limit)
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
 
     if (search) {
       params = params.set('search', search);
@@ -37,9 +49,13 @@ export class InvoiceService {
       params = params.set('status', status);
     }
 
-    return this.http.get<{ invoices: Invoice[]; total: number }>(this.apiUrl, {
-      params,
-    });
+    return this.http.get<{
+      invoices: Invoice[];
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    }>(this.apiUrl, { params });
   }
 
   // Fetch one invoice by ID
