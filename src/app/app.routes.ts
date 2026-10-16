@@ -4,7 +4,6 @@ import { adminGuard } from './core/guards/admin.guard';
 import { LayoutComponent } from './core/🖥️layout/layout.component';
 import { APP_ROUTES } from './shared/constants/routes.constants';
 import { guestGuard } from './core/guards/guest.guard';
-import { blockBrowserNavGuard } from './core/guards/block-browser-nav.guard';
 
 export const routes: Routes = [
   {
@@ -32,7 +31,6 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     canActivate: [authGuard],
-    canActivateChild: [authGuard, blockBrowserNavGuard],
     children: [
       {
         path: APP_ROUTES.DASHBOARD,
@@ -65,9 +63,5 @@ export const routes: Routes = [
           ),
       },
     ],
-  },
-  {
-    path: '**',
-    redirectTo: APP_ROUTES.LOGIN,
   },
 ];
