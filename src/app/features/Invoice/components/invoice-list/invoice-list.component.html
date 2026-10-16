@@ -30,6 +30,7 @@
     </select>
   </div>
 
+  <p-confirmDialog></p-confirmDialog>
   <p-toast position="top-right"></p-toast>
 
   <p-dialog
@@ -259,6 +260,15 @@
               severity="secondary"
               [text]="true"
               (click)="editInvoice(invoice)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              label="Delete"
+              severity="danger"
+              [text]="true"
+              (click)="deleteInvoice(invoice._id)"
             ></button>
           </td>
         </tr>

@@ -32,6 +32,8 @@ import {
   INVOICE_STATUS,
   INVOICE_STATUS_OPTIONS,
 } from '../../../../shared/constants/status.constants';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 type InvoiceForm = {
   invoiceNumber: string;
@@ -47,6 +49,7 @@ type InvoiceForm = {
 @Component({
   selector: 'app-invoice-list',
   standalone: true,
+   providers: [ConfirmationService],
   imports: [
     CommonModule,
     FormsModule,
@@ -54,6 +57,7 @@ type InvoiceForm = {
     DialogModule,
     ToastModule,
     TableModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './invoice-list.component.html',
   styleUrl: './invoice-list.component.scss',
@@ -62,6 +66,7 @@ export class InvoiceListComponent implements OnInit {
   private invoiceService = inject(InvoiceService);
   private toastMessageService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
+  private confirmService = inject(ConfirmationService);
 
   invoices: Invoice[] = [];
   loading = false;
@@ -72,6 +77,9 @@ export class InvoiceListComponent implements OnInit {
   newInvoice: InvoiceForm = { ...NEW_INVOICE };
   sortField = 'createdAt';
   sortOrder = -1;
+  deleteDialogVisible = false;
+  deleting = false;
+  selectedInvoice: Invoice | null = null;
 
   searchTerm = '';
   selectedStatus = 'All';
@@ -264,5 +272,38 @@ export class InvoiceListComponent implements OnInit {
       this.isMoney(f.amount) &&
       (f.tax == null || this.isMoney(f.tax))
     );
+  }
+
+  deleteInvoice(id: string): void {
+    this.confirmService.confirm({
+      header: 'Delete Invoice',
+      message: 'Are you sure you want to delete this invoice?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      acceptButtonStyleClass: 'p-button-danger',
+
+      accept: () => {
+        this.invoiceService.deleteInvoice(id).subscribe({
+          next: () => {
+            this.invoices = this.invoices.filter(
+              (invoice) => invoice._id !== id,
+            );
+
+            this.toastMessageService.success('Invoice deleted successfully.');
+
+            // Reload to refresh server-side pagination and total count.
+            this.loadInvoices();
+          },
+          error: (err) => {
+            console.error(err);
+
+            this.toastMessageService.error(
+              err.error?.message || 'Failed to delete invoice.',
+            );
+          },
+        });
+      },
+    });
   }
 }
