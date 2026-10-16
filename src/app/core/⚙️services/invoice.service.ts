@@ -76,4 +76,8 @@ export class InvoiceService {
   ): Observable<Invoice> {
     return this.http.post<Invoice>(this.apiUrl, invoice);
   }
+
+  deleteInvoice(id: string) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }
