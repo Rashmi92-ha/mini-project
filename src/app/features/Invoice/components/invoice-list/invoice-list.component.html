@@ -14,6 +14,22 @@
     ></button>
   </div>
 
+  <div class="invoice-filters">
+    <input
+      pInputText
+      type="text"
+      placeholder="Search by invoice number or supplier..."
+      [ngModel]="searchTerm"
+      (ngModelChange)="onSearchChange($event)"
+    />
+
+    <select [ngModel]="selectedStatus" (ngModelChange)="onStatusChange($event)">
+      <option *ngFor="let option of statusOptions" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+
   <p-toast position="top-right"></p-toast>
 
   <p-dialog
@@ -162,10 +178,26 @@
   <div class="error-state" *ngIf="!loading && errorMessage">
     {{ errorMessage }}
   </div>
-
   <div class="table-wrapper" *ngIf="!loading && !errorMessage">
-    <table>
-      <thead>
+    <p-table
+      [value]="invoices"
+      [lazy]="true"
+      [lazyLoadOnInit]="false"
+      (onLazyLoad)="onLazyLoad($event)"
+      [paginator]="true"
+      [rows]="pageSize"
+      [first]="(currentPage - 1) * pageSize"
+      [totalRecords]="totalInvoices"
+      [loading]="loading"
+      [rowsPerPageOptions]="[5, 10, 20, 50]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} invoices"
+      [tableStyle]="{ 'min-width': '60rem' }"
+      styleClass="p-datatable-striped"
+      [rowHover]="true"
+      dataKey="_id"
+    >
+      <ng-template pTemplate="header">
         <tr>
           <th>Invoice No.</th>
           <th>Supplier</th>
@@ -175,10 +207,9 @@
           <th>Status</th>
           <th>Actions</th>
         </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let invoice of invoices">
+      </ng-template>
+      <ng-template pTemplate="body" let-invoice>
+        <tr>
           <td class="invoice-number">
             {{ invoice.invoiceNumber }}
           </td>
@@ -216,13 +247,12 @@
             ></button>
           </td>
         </tr>
-
-        <tr *ngIf="invoices.length === 0">
-          <td colspan="7" class="empty-state">
-            No invoices found. Click "Add Invoice" to create your first invoice.
-          </td>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="empty-state">No matching invoices found.</td>
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

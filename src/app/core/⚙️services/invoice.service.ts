@@ -22,12 +22,24 @@ export class InvoiceService {
 
   // Fetch invoices with pagination
   getInvoices(
-    page: number = 1,
-    limit: number = 10,
-  ): Observable<InvoiceListResponse> {
-    const params = new HttpParams().set('page', page).set('limit', limit);
+    page = 1,
+    limit = 10,
+    search = '',
+    status = 'All',
+  ): Observable<{ invoices: Invoice[]; total: number }> {
+    let params = new HttpParams().set('page', page).set('limit', limit);
 
-    return this.http.get<InvoiceListResponse>(this.apiUrl, { params });
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    if (status !== 'All') {
+      params = params.set('status', status);
+    }
+
+    return this.http.get<{ invoices: Invoice[]; total: number }>(this.apiUrl, {
+      params,
+    });
   }
 
   // Fetch one invoice by ID

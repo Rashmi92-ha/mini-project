@@ -1,12 +1,24 @@
-.invoice-container {
-  padding: 24px;
-  color: #1f2937;
-  background: #f8fafc;
-  min-height: 100%;
-  box-sizing: border-box;
+$border: #e5e7eb;
+$input-border: #d1d5db;
+$heading: #111827;
+$muted: #6b7280;
+$mobile: 640px;
+
+@mixin control {
+  border: 1px solid $input-border;
+  border-radius: 6px;
+  background: #fff;
 }
 
-/* Page Header */
+.invoice-container {
+  padding: 24px;
+  min-height: 100%;
+  box-sizing: border-box;
+  color: #1f2937;
+  background: #f8fafc;
+}
+
+/* Page header */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -18,23 +30,23 @@
     margin: 0;
     font-size: 24px;
     font-weight: 600;
-    color: #111827;
+    color: $heading;
   }
 }
 
 .page-subtitle {
   margin: 6px 0 0;
-  color: #6b7280;
+  color: $muted;
   font-size: 14px;
 }
 
 /* Table */
 .table-wrapper {
   overflow-x: auto;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
   margin-top: 20px;
+  background: #fff;
+  border: 1px solid $border;
+  border-radius: 10px;
 }
 
 table {
@@ -47,7 +59,7 @@ th,
 td {
   padding: 14px 16px;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid $border;
   white-space: nowrap;
 }
 
@@ -57,31 +69,34 @@ th {
   font-size: 13px;
   font-weight: 600;
 }
-
 td {
-  font-size: 14px;
   color: #4b5563;
+  font-size: 14px;
 }
 
 tbody tr:last-child td {
   border-bottom: none;
 }
-
-tbody tr:hover:not(:last-child) {
-  background: #f9fafb;
+tbody tr {
+  transition: background-color 0.2s ease;
+  &:hover:not(:last-child) {
+    background-color: #f1f5f9;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .invoice-number {
   font-weight: 600;
   color: #1d4ed8;
 }
-
 .amount-cell {
   font-weight: 500;
-  color: #111827;
+  color: $heading;
 }
 
-/* Invoice Status */
+/* Invoice status */
 .status-badge {
   display: inline-block;
   padding: 5px 10px;
@@ -94,18 +109,16 @@ tbody tr:hover:not(:last-child) {
   background: #fef3c7;
   color: #92400e;
 }
-
 .status-paid {
   background: #dcfce7;
   color: #166534;
 }
-
 .status-overdue {
   background: #fee2e2;
   color: #991b1b;
 }
 
-/* Dialog Form */
+/* Dialog form */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -117,32 +130,29 @@ tbody tr:hover:not(:last-child) {
   flex-direction: column;
   gap: 7px;
   min-width: 0;
-}
 
-.form-field label {
-  color: #374151;
-  font-size: 13px;
-  font-weight: 600;
-}
+  label {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 600;
+  }
 
-.form-field input,
-.form-field select {
-  width: 100%;
-  min-height: 40px;
-  box-sizing: border-box;
-  padding: 9px 11px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #111827;
-  font: inherit;
-}
+  input,
+  select {
+    @include control;
+    width: 100%;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 9px 11px;
+    color: $heading;
+    font: inherit;
 
-.form-field input:focus,
-.form-field select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgb(59 130 246 / 12%);
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgb(59 130 246 / 12%);
+    }
+  }
 }
 
 .field-error {
@@ -150,7 +160,6 @@ tbody tr:hover:not(:last-child) {
   font-size: 12px;
 }
 
-/* Dialog Actions */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -158,27 +167,44 @@ tbody tr:hover:not(:last-child) {
   gap: 10px;
   margin-top: 26px;
   padding-top: 18px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid $border;
 }
 
-/* Loading, Error and Empty States */
+/* Loading, error and empty states */
 .loading-state,
 .empty-state {
   padding: 28px 16px;
   text-align: center;
-  color: #6b7280;
+  color: $muted;
 }
 
 .error-state {
-  padding: 14px 16px;
   margin-top: 16px;
+  padding: 14px 16px;
   border-radius: 6px;
   background: #fef2f2;
   color: #b91c1c;
 }
 
-/* Responsive Layout */
-@media (max-width: 640px) {
+/* Filters */
+.invoice-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+  select {
+    @include control;
+    min-width: 150px;
+    padding: 10px;
+  }
+}
+
+/* Responsive */
+@media (max-width: $mobile) {
   .invoice-container {
     padding: 16px;
   }
@@ -186,10 +212,10 @@ tbody tr:hover:not(:last-child) {
   .page-header {
     align-items: flex-start;
     flex-direction: column;
-  }
 
-  .page-header h2 {
-    font-size: 21px;
+    h2 {
+      font-size: 21px;
+    }
   }
 
   .form-grid {
@@ -198,9 +224,17 @@ tbody tr:hover:not(:last-child) {
 
   .form-actions {
     flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+    }
   }
 
-  .form-actions button {
-    width: 100%;
+  .invoice-filters {
+    flex-direction: column;
+
+    select {
+      width: 100%;
+    }
   }
 }
