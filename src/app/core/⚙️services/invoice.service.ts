@@ -12,6 +12,13 @@ export interface InvoiceListResponse {
   totalPages: number;
 }
 
+export interface InvoiceSummary {
+  totalInvoices: number;
+  paidInvoices: number;
+  pendingInvoices: number;
+  overdueInvoices: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -79,5 +86,9 @@ export class InvoiceService {
 
   deleteInvoice(id: string) {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  getInvoiceSummary(): Observable<InvoiceSummary> {
+    return this.http.get<InvoiceSummary>(`${this.apiUrl}/summary`);
   }
 }

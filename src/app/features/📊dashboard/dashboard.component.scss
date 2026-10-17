@@ -1,32 +1,114 @@
-.dashboard-container {
-  display: flex;
-  gap: 20px;
-}
-.card {
-  border: 1px solid #000000;
-  padding: 20px;
-  width: 200px;
-  background-color: #00a2ff;
-  text-align: center;
-}
-button {
-  margin-top: 20px;
-  margin-left: 20px;
+.dashboard-page {
+  padding: 1.5rem;
 }
 
-input {
-  margin-bottom: 20px;
+.summary-card {
+  height: 100%;
 }
-table {
-  width: 80%;
-  border-collapse: collapse ;
+
+.summary-label {
+  display: block;
+  color: var(--p-text-muted-color);
+  font-size: 0.875rem;
+  margin-bottom: 0.75rem;
 }
-th,
-td{
-  border: 1px solid #000000 ;
-  text-align: center;
+
+.summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--p-text-color);
 }
-th{
-  text-align: center;
-  background-color: #7fff00;
+
+.summary-icon {
+  font-size: 1.75rem;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+}
+
+.employee-icon,
+.invoice-icon {
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.email-icon {
+  color: #b45309;
+  background: #fef3c7;
+}
+
+.department-icon {
+  color: #7c3aed;
+  background: #ede9fe;
+}
+
+.active-icon {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.overdue-icon {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.table-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.table-card-header h3 {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .dashboard-page {
+    padding: 0.75rem;
+  }
+
+  .table-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.department-insights-card {
+  margin-bottom: 1rem;
+}
+
+.department-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.department-name {
+  font-weight: 600;
+}
+
+.department-count {
+  color: var(--p-text-muted-color);
+  font-size: 0.875rem;
+}
+
+.department-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--p-content-border-color);
+}
+
+.department-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 640px) {
+  .department-list {
+    grid-template-columns: 1fr;
+  }
 }

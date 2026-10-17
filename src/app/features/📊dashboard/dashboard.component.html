@@ -1,55 +1,148 @@
-<h2>Employee Dashboard</h2>
+<div class="dashboard-page">
+  <!-- Page Header -->
+  <div class="flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mt-0 mb-2">Dashboard</h2>
+      <p class="text-color-secondary mt-0">Employee and invoice overview</p>
+    </div>
+  </div>
 
-<div class="dashboard-container">
-  <div class="card">
-    <h3>Total Employees</h3>
-    <p>{{ totalEmployee }}</p>
+  <!-- Employee Summary -->
+  <h3>Employee Overview</h3>
+
+  <div class="grid">
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Total Employees</span>
+            <div class="summary-value">{{ totalEmployee }}</div>
+          </div>
+          <i class="pi pi-users summary-icon employee-icon"></i>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Total Emails</span>
+            <div class="summary-value">{{ totalEmail }}</div>
+          </div>
+          <i class="pi pi-envelope summary-icon email-icon"></i>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Departments</span>
+            <div class="summary-value">{{ totalDepartment }}</div>
+          </div>
+          <i class="pi pi-building summary-icon department-icon"></i>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Active Employees</span>
+            <div class="summary-value">{{ totalActive }}</div>
+          </div>
+          <i class="pi pi-check-circle summary-icon active-icon"></i>
+        </div>
+      </p-card>
+    </div>
   </div>
-  <div class="card">
-    <h3>Total Email</h3>
-    <p>{{ totalEmail }}</p>
+
+  <!-- Invoice Summary -->
+  <h3 class="mt-4">Invoice Overview</h3>
+
+  <div class="grid">
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Total Invoices</span>
+            <div class="summary-value">{{ totalInvoices }}</div>
+          </div>
+
+          <i class="pi pi-file summary-icon invoice-icon"></i>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Paid Invoices</span>
+            <div class="summary-value">{{ paidInvoices }}</div>
+          </div>
+
+          <i class="pi pi-check-circle summary-icon active-icon"></i>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Pending Invoices</span>
+            <div class="summary-value">{{ pendingInvoices }}</div>
+          </div>
+
+          <i class="pi pi-clock summary-icon email-icon"></i>
+        </div>
+      </p-card>
+    </div>
+    <div class="col-12 sm:col-6 lg:col-3">
+      <p-card styleClass="summary-card">
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <span class="summary-label">Overdue Invoices</span>
+            <div class="summary-value">{{ overdueInvoices }}</div>
+          </div>
+
+          <i class="pi pi-exclamation-triangle summary-icon overdue-icon"></i>
+        </div>
+      </p-card>
+    </div>
   </div>
-  <div class="card">
-    <h3>Total Department</h3>
-    <p>{{ totalDepartment }}</p>
-  </div>
-  <div class="card">
-    <h3>Active Employees</h3>
-    <p>{{ totalActive }}</p>
-  </div>
+
+  <!-- Department Insights -->
+  <h3 class="mt-4">Department Insights</h3>
+
+  <p-card styleClass="department-insights-card">
+    <div class="department-list">
+      @for (department of departmentSummary; track department.name) {
+        <div class="department-item">
+          <div class="flex align-items-center justify-content-between mb-2">
+            <span class="department-name">{{ department.name }}</span>
+            <span class="department-count">
+              {{ department.count }}
+              {{ department.count === 1 ? "employee" : "employees" }}
+            </span>
+          </div>
+
+          <div class="department-progress">
+            <div
+              class="department-progress-fill"
+              [style.width.%]="
+                totalEmployee ? (department.count / totalEmployee) * 100 : 0
+              "
+            ></div>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-color-secondary">No department data available.</p>
+      }
+    </div>
+  </p-card>
 </div>
-
-<h3>Employee List</h3>
-<div>
-  <input type="text" placeholder="Search Employee" [(ngModel)]="searchText" />
-  <button (click)="sortEmployee()">
-    {{ isAscending ? "sort A-Z" : "sort Z-A" }}
-  </button>
-</div>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Department</th>
-      <th>Role</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (employe of filteredEmployees; track employe._id) {
-      <tr>
-        <td>
-          <a [routerLink]="['/employee', employe._id]">
-            {{ employe.name }}
-          </a>
-        </td>
-        <td>{{ employe.email }}</td>
-        <td>{{ employe.department }}</td>
-        <td>{{ employe.role }}</td>
-        <td>{{ employe.status }}</td>
-      </tr>
-    }
-  </tbody>
-</table>
