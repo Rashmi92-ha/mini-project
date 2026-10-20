@@ -118,7 +118,6 @@
 
   <!-- Department Insights -->
   <h3 class="mt-4">Department Insights</h3>
-
   <p-card styleClass="department-insights-card">
     <div class="department-list">
       @for (department of departmentSummary; track department.name) {
@@ -134,9 +133,7 @@
           <div class="department-progress">
             <div
               class="department-progress-fill"
-              [style.width.%]="
-                totalEmployee ? (department.count / totalEmployee) * 100 : 0
-              "
+              [style.width.%]="(department.count / totalEmployee) * 100"
             ></div>
           </div>
         </div>

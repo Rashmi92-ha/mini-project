@@ -1,0 +1,78 @@
+.department-page {
+  padding: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin: 0 0 0.5rem;
+}
+
+.page-header p {
+  margin: 0;
+}
+
+.department-table-card {
+  margin-bottom: 1rem;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.table-toolbar h3 {
+  margin: 0;
+}
+
+.empty-message {
+  padding: 2rem;
+  text-align: center;
+  color: var(--p-text-muted-color);
+}
+
+@media (max-width: 640px) {
+  .department-page {
+    padding: 0.75rem;
+  }
+
+  .page-header,
+  .table-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 6px;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  :host ::ng-deep .department-save-btn {
+    margin-left: 12px;
+  }
+}

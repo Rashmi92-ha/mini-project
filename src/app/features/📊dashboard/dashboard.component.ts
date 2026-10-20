@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { EmployeeService } from '../../core/⚙️services/employee.service';
-import { Employee } from '../👨‍💼employee/📦models/employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -9,10 +7,14 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputIconModule } from 'primeng/inputicon';
 import { TagModule } from 'primeng/tag';
+import { EmployeeService } from '../../core/⚙️services/employee.service';
+import { Employee } from '../👨‍💼employee/📦models/employee';
 import {
   InvoiceService,
   InvoiceSummary,
 } from '../../core/⚙️services/invoice.service';
+import { DepartmentService } from '../../core/⚙️services/department.service';
+import { Department } from '../department/models/department.model';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -31,11 +33,18 @@ import {
 })
 export class DashboardComponent implements OnInit {
   employeeList: Employee[] = [];
-  departmentSummary: { name: string; count: number }[] = [];
+
+  departmentSummary: {
+    id: string;
+    name: string;
+    count: number;
+  }[] = [];
+
   totalEmployee = 0;
   totalEmail = 0;
   totalDepartment = 0;
   totalActive = 0;
+
   totalInvoices = 0;
   paidInvoices = 0;
   pendingInvoices = 0;
@@ -43,23 +52,30 @@ export class DashboardComponent implements OnInit {
 
   private employeeService = inject(EmployeeService);
   private invoiceService = inject(InvoiceService);
+  private departmentService = inject(DepartmentService);
 
-  ngOnInit() {
-    this.employeeService.getEmployee().subscribe((data) => {
-      this.employeeList = data;
-      this.totalEmployee = this.employeeList.length;
-      this.totalEmail = this.employeeList.filter(
-        (employee) => employee.email,
-      ).length;
-      this.totalDepartment = new Set(
-        this.employeeList
-          .map((employee) => employee.department?.trim())
-          .filter((department) => department),
-      ).size;
-      this.totalActive = this.employeeList.filter(
-        (employee) => employee.status === 'Active',
-      ).length;
+  ngOnInit(): void {
+    this.employeeService.getEmployee().subscribe({
+      next: (data) => {
+        this.employeeList = data;
+
+        this.totalEmployee = this.employeeList.length;
+
+        this.totalEmail = this.employeeList.filter(
+          (employee) => employee.email,
+        ).length;
+
+        this.totalActive = this.employeeList.filter(
+          (employee) => employee.status === 'Active',
+        ).length;
+
+        this.loadDepartmentSummary();
+      },
+      error: (error) => {
+        console.error('Failed to load employees:', error);
+      },
     });
+
     this.loadInvoiceSummary();
   }
 
@@ -71,29 +87,39 @@ export class DashboardComponent implements OnInit {
         this.pendingInvoices = summary.pendingInvoices;
         this.overdueInvoices = summary.overdueInvoices;
       },
-      error: (err) => {
-        console.error('Failed to load invoice summary:', err);
+      error: (error) => {
+        console.error('Failed to load invoice summary:', error);
       },
     });
   }
 
   loadDepartmentSummary(): void {
-    const departmentCounts = new Map<string, number>();
+    this.departmentService.getDepartments().subscribe({
+      next: (departments: Department[]) => {
+        const departmentCounts = new Map<string, number>();
 
-    this.employeeList.forEach((employee) => {
-      const department = employee.department?.trim();
+        this.employeeList.forEach((employee) => {
+          const name = employee.department?.trim().toLowerCase();
 
-      if (department) {
-        departmentCounts.set(
-          department,
-          (departmentCounts.get(department) ?? 0) + 1,
-        );
-      }
+          if (name) {
+            departmentCounts.set(name, (departmentCounts.get(name) ?? 0) + 1);
+          }
+        });
+
+        this.departmentSummary = departments
+          .map((department) => ({
+            id: department._id,
+            name: department.name,
+            count:
+              departmentCounts.get(department.name.trim().toLowerCase()) ?? 0,
+          }))
+          .sort((a, b) => b.count - a.count);
+
+        this.totalDepartment = departments.length;
+      },
+      error: (error) => {
+        console.error('Failed to load department summary:', error);
+      },
     });
-
-    this.departmentSummary = Array.from(departmentCounts, ([name, count]) => ({
-      name,
-      count,
-    })).sort((a, b) => b.count - a.count);
   }
 }

@@ -9,6 +9,10 @@ export const SUCCESS_MESSAGES = {
 
   INVOICE_CREATED: 'Invoice created successfully!',
   INVOICE_UPDATED: 'Invoice updated successfully',
+
+  DEPARMENT_CREATED: 'Department created successfully.',
+  DEPARTMENT_UPADATE: 'Department updated successfully.',
+   DEPARTMENT_DELETE: 'Department deleted successfully.',
 } as const;
 
 export const ERROR_MESSAGES = {
@@ -25,6 +29,11 @@ export const ERROR_MESSAGES = {
   INVOICE_LOADING_FAILD: 'Failed to load invoices',
   INVALID_ID: 'Invalid invoice ID.',
   INVALID_DELETION: 'Unable to delete invoice',
+
+  LOAD_DEPARTMENTS: 'Failed to load departments.',
+  DEPARTMENT_CREATE: 'Failed to create department.',
+  DEPARTMENT_UPDATE: 'Failed to update department.',
+  DEPARTMENT_DELETE: 'Failed to delete department.',
 } as const;
 
 export const REQUIRED_MESSAGES = { 
