@@ -7,6 +7,31 @@
     </div>
   </div>
 
+  <p-card header="AI Dashboard Insights" styleClass="dashboard-insights-card">
+    <div *ngIf="insightsLoading" class="insights-loading">
+      <i class="pi pi-spin pi-spinner"></i>
+      Generating dashboard insights...
+    </div>
+
+    <div *ngIf="insightsError" class="insights-error">
+      {{ insightsError }}
+    </div>
+
+    <ul
+      *ngIf="!insightsLoading && !insightsError && insights.length"
+      class="insights-list"
+    >
+      <li *ngFor="let insight of insights">
+        <i class="pi pi-lightbulb"></i>
+        <span>{{ insight }}</span>
+      </li>
+    </ul>
+
+    <p *ngIf="!insightsLoading && !insightsError && !insights.length">
+      No dashboard insights available.
+    </p>
+  </p-card>
+
   <!-- Employee Summary -->
   <h3>Employee Overview</h3>
 
