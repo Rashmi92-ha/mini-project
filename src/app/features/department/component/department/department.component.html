@@ -1,0 +1,216 @@
+<div class="department-page">
+  <div class="page-header">
+    <div>
+      <h2>Department Management</h2>
+      <p class="text-color-secondary">
+        Manage your organization's departments.
+      </p>
+    </div>
+
+    @if (isAdmin) {
+      <p-button
+        label="Add Department"
+        icon="pi pi-plus"
+        (onClick)="openAddDepartmentDialog()"
+      />
+    }
+  </div>
+
+  <p-card styleClass="department-table-card">
+    <div class="table-toolbar">
+      <h3>Departments</h3>
+
+      <!-- Filters the table through PrimeNG's built-in global filter -->
+      <input
+        pInputText
+        type="text"
+        placeholder="Search departments"
+        aria-label="Search departments"
+        autocomplete="off"
+        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+      />
+    </div>
+
+    <p-table
+      #dt
+      dataKey="_id"
+      [value]="departments"
+      [globalFilterFields]="['name', 'description']"
+      [loading]="loading"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [tableStyle]="{ 'min-width': '40rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Department Name</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-department>
+        <tr>
+          <td>{{ department.name }}</td>
+          <td>{{ department.description || "-" }}</td>
+          <td>
+            <p-button
+              icon="pi pi-eye"
+              [text]="true"
+              pTooltip="View Department"
+              ariaLabel="View department"
+              (onClick)="viewDepartment(department)"
+            />
+
+            @if (isAdmin) {
+              <p-button
+                icon="pi pi-pencil"
+                severity="info"
+                [text]="true"
+                pTooltip="Edit Department"
+                ariaLabel="Edit department"
+                (onClick)="openEditDepartmentDialog(department)"
+              />
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                pTooltip="Delete Department"
+                ariaLabel="Delete department"
+                (onClick)="deleteDepartment(department)"
+              />
+            }
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3" class="empty-message">No departments found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+
+  <!-- View dialog -->
+  <p-dialog
+    header="Department Details"
+    [(visible)]="showViewDialog"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+    (onHide)="closeViewDialog()"
+  >
+    @if (selectedDepartment) {
+      <div class="mb-3">
+        <strong>Department Name</strong>
+        <p>{{ selectedDepartment.name }}</p>
+      </div>
+
+      <div class="mb-3">
+        <strong>Description</strong>
+        <p>{{ selectedDepartment.description || "-" }}</p>
+      </div>
+
+      <div>
+        <strong>Created Date</strong>
+        <p>{{ selectedDepartment.createdAt | date: "mediumDate" }}</p>
+      </div>
+    }
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Close"
+        severity="secondary"
+        (onClick)="closeViewDialog()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <!-- Add / Edit dialog -->
+  <p-dialog
+    [header]="isEditMode ? 'Edit Department' : 'Add Department'"
+    [(visible)]="showDepartmentDialog"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+    [draggable]="false"
+    [resizable]="false"
+    (onHide)="closeDepartmentDialog()"
+  >
+    <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()">
+      <div class="field">
+        <label for="departmentName">Department Name *</label>
+        <input
+          id="departmentName"
+          pInputText
+          formControlName="name"
+          placeholder="Enter department name"
+          autocomplete="off"
+          maxlength="100"
+          class="w-full"
+        />
+
+        @if (departmentForm.controls.name.touched) {
+          @if (
+            departmentForm.controls.name.hasError("required") ||
+            departmentForm.controls.name.hasError("blank")
+          ) {
+            <small class="p-error">Department name is required.</small>
+          } @else if (departmentForm.controls.name.hasError("minlength")) {
+            <small class="p-error">
+              Department name must contain at least 2 characters.
+            </small>
+          } @else if (departmentForm.controls.name.hasError("maxlength")) {
+            <small class="p-error">
+              Department name cannot exceed 100 characters.
+            </small>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <label for="departmentDescription">Description</label>
+        <textarea
+          id="departmentDescription"
+          pInputTextarea
+          formControlName="description"
+          placeholder="Enter department description"
+          rows="4"
+          class="w-full"
+        ></textarea>
+
+        @if (
+          departmentForm.controls.description.touched &&
+          departmentForm.controls.description.hasError("maxlength")
+        ) {
+          <small class="p-error">
+            Description cannot exceed 500 characters.
+          </small>
+        }
+      </div>
+
+      <div class="dialog-actions">
+        <p-button
+          label="Cancel"
+          severity="secondary"
+          [outlined]="true"
+          type="button"
+          [disabled]="saving"
+          (onClick)="closeDepartmentDialog()"
+        />
+
+        <p-button
+          styleClass="department-save-btn"
+          label="Save"
+          icon="pi pi-check"
+          type="submit"
+          [loading]="saving"
+          [disabled]="saving"
+        />
+      </div>
+    </form>
+  </p-dialog>
+
+  <p-confirmDialog />
+  <p-toast />
+</div>

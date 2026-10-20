@@ -4,6 +4,7 @@
   <h2>Employees</h2>
   <button
     pButton
+    *ngIf = "isAdmin"
     label="Add Employee"
     icon="pi pi-plus"
     (click)="openDialog()"
@@ -68,12 +69,14 @@
         <div>
           <button
             pButton
+            *ngIf = "isAdmin"
             icon="pi pi-pencil"
             [text]="true"
             (click)="editEmployee(employee)"
           ></button>
           <button
             pButton
+            *ngIf="isAdmin"
             icon="pi pi-trash"
             severity="danger"
             [text]="true"
@@ -138,11 +141,15 @@
           inputId="department"
           [options]="departments"
           optionLabel="name"
-          optionValue="value"
+          optionValue="name"
           formControlName="department"
           placeholder="Select Department"
+          [loading]="departmentsLoading"
+          [filter]="true"
+          filterBy="name"
         >
         </p-dropdown>
+
         <label for="department">Department</label>
       </p-floatLabel>
       @if (isFieldInvalid("department") && hasError("department", "required")) {

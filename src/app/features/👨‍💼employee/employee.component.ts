@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -22,10 +22,18 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
-import { DEPARTMENTS } from '../../shared/constants/department.constants';
 import { ROLE } from '../../shared/constants/role.constants';
-import { STATUS, STATUS_OPTIONS } from '../../shared/constants/status.constants';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../shared/constants/message.constants';
+import {
+  STATUS,
+  STATUS_OPTIONS,
+} from '../../shared/constants/status.constants';
+import {
+  SUCCESS_MESSAGES,
+  ERROR_MESSAGES,
+} from '../../shared/constants/message.constants';
+import { DepartmentService } from '../../core/⚙️services/department.service';
+import { Department } from '../department/models/department.model';
+import { AuthService } from '../../core/⚙️services/auth.service';
 @Component({
   selector: 'app-employee',
   standalone: true,
@@ -49,12 +57,12 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '../../shared/constants/message
   templateUrl: './employee.component.html',
   styleUrl: './employee.component.scss',
 })
-export class EmployeeComponent {
-  constructor(
-    private employeeService: EmployeeService,
-    private confirmService: ConfirmationService,
-    private toastService: ToastService,
-  ) {}
+export class EmployeeComponent implements OnInit {
+  private employeeService = inject(EmployeeService);
+  private confirmService = inject(ConfirmationService);
+  private toastService = inject(ToastService);
+  private departmentService = inject(DepartmentService);
+  private authService = inject(AuthService);
 
   employeeForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -74,12 +82,18 @@ export class EmployeeComponent {
   displayDialog = false;
   loading = false;
   searchText = '';
-  departments = DEPARTMENTS;
+  departments: Department[] = [];
+  departmentsLoading = false;
   roles = ROLE;
   statusList = STATUS_OPTIONS;
 
   ngOnInit() {
     this.loadEmployees();
+    this.loadDepartments();
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
   }
 
   onSubmit() {
@@ -104,15 +118,16 @@ export class EmployeeComponent {
               if (index !== -1) {
                 this.employeeList[index] = updated;
               }
-              this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_UPDATED)
+              this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_UPDATED);
               this.editId = null;
               this.employeeForm.reset();
               this.displayDialog = false;
             },
-            error: (err) => {console.error(err)
+            error: (err) => {
+              console.error(err);
               this.toastService.error(
-                err.error?.message || ERROR_MESSAGES.EMPLOYEE_UPDATE
-              )
+                err.error?.message || ERROR_MESSAGES.EMPLOYEE_UPDATE,
+              );
             },
           });
       } else {
@@ -120,15 +135,15 @@ export class EmployeeComponent {
         this.employeeService.addEmployee(employeeData).subscribe({
           next: (response) => {
             this.employeeList.push(response);
-            this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_CREATED)
+            this.toastService.success(SUCCESS_MESSAGES.EMPLOYEE_CREATED);
             this.employeeForm.reset();
             this.displayDialog = false;
           },
-           error: (err) => {
+          error: (err) => {
             console.error(err);
             this.toastService.error(
-              err.error?.message || ERROR_MESSAGES.EMPLOYEE_CREATE
-            )
+              err.error?.message || ERROR_MESSAGES.EMPLOYEE_CREATE,
+            );
           },
         });
       }
@@ -162,8 +177,8 @@ export class EmployeeComponent {
           error: (err) => {
             console.error(err);
             this.toastService.error(
-              err.error?.message || ERROR_MESSAGES.EMPLOYEE_DELETE
-            )
+              err.error?.message || ERROR_MESSAGES.EMPLOYEE_DELETE,
+            );
           },
         });
       },
@@ -193,10 +208,27 @@ export class EmployeeComponent {
       },
       error: (err) => {
         console.error(err);
-        this.toastService.error(ERROR_MESSAGES.EMPLOYEE_LOAD)
+        this.toastService.error(ERROR_MESSAGES.EMPLOYEE_LOAD);
       },
       complete: () => {
         this.loading = false;
+      },
+    });
+  }
+
+  loadDepartments(): void {
+    this.departmentsLoading = true;
+
+    this.departmentService.getDepartments().subscribe({
+      next: (departments) => {
+        this.departments = departments;
+      },
+      error: (error) => {
+        console.error('Failed to load departments:', error);
+        this.toastService.error(ERROR_MESSAGES.LOAD_DEPARTMENTS);
+      },
+      complete: () => {
+        this.departmentsLoading = false;
       },
     });
   }

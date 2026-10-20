@@ -62,6 +62,13 @@ export const routes: Routes = [
             (m) => m.InvoiceListComponent,
           ),
       },
+      {
+        path:APP_ROUTES.DEPARTMENTS,
+         loadComponent: () => 
+          import('./features/department/component/department/department.component').then(
+            (m) => m.DepartmentComponent,
+          )
+      }
     ],
   },
 ];
