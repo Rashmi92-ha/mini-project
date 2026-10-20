@@ -117,3 +117,39 @@
     grid-template-columns: 1fr;
   }
 }
+
+.dashboard-insights-card {
+  margin-bottom: 1.5rem;
+}
+
+.insights-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.insights-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  line-height: 1.5;
+}
+
+.insights-list li + li {
+  border-top: 1px solid var(--surface-border);
+}
+
+.insights-list .pi-lightbulb {
+  color: var(--primary-color);
+  margin-top: 0.2rem;
+}
+
+.insights-loading,
+.insights-error {
+  padding: 0.75rem 0;
+}
+
+.insights-error {
+  color: var(--red-500);
+}

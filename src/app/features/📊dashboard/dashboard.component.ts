@@ -15,6 +15,10 @@ import {
 } from '../../core/⚙️services/invoice.service';
 import { DepartmentService } from '../../core/⚙️services/department.service';
 import { Department } from '../department/models/department.model';
+import {
+  DashboardService,
+  DashboardInsightsResponse,
+} from '../../core/⚙️services/dashboard.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -50,9 +54,14 @@ export class DashboardComponent implements OnInit {
   pendingInvoices = 0;
   overdueInvoices = 0;
 
+  insights: string[] = [];
+  insightsLoading = false;
+  insightsError = '';
+
   private employeeService = inject(EmployeeService);
   private invoiceService = inject(InvoiceService);
   private departmentService = inject(DepartmentService);
+  private dashboardService = inject(DashboardService);
 
   ngOnInit(): void {
     this.employeeService.getEmployee().subscribe({
@@ -70,6 +79,7 @@ export class DashboardComponent implements OnInit {
         ).length;
 
         this.loadDepartmentSummary();
+        this.loadDashboardInsights();
       },
       error: (error) => {
         console.error('Failed to load employees:', error);
@@ -119,6 +129,22 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to load department summary:', error);
+      },
+    });
+  }
+  loadDashboardInsights(): void {
+    this.insightsLoading = true;
+    this.insightsError = '';
+
+    this.dashboardService.getInsights().subscribe({
+      next: (response: DashboardInsightsResponse) => {
+        this.insights = response.insights;
+        this.insightsLoading = false;
+      },
+      error: (error) => {
+        console.error('Failed to load dashboard insights:', error);
+        this.insightsError = 'Unable to load dashboard insights.';
+        this.insightsLoading = false;
       },
     });
   }
