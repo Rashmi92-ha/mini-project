@@ -55,6 +55,9 @@ export class DashboardComponent implements OnInit {
   overdueInvoices = 0;
 
   insights: string[] = [];
+  aiExplanation: string | null = null;
+  aiEnabled = false;
+
   insightsLoading = false;
   insightsError = '';
 
@@ -139,6 +142,9 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getInsights().subscribe({
       next: (response: DashboardInsightsResponse) => {
         this.insights = response.insights;
+        this.aiExplanation = response.aiExplanation;
+        this.aiEnabled = response.aiEnabled;
+
         this.insightsLoading = false;
       },
       error: (error) => {

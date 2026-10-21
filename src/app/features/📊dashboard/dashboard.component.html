@@ -7,29 +7,62 @@
     </div>
   </div>
 
-  <p-card header="AI Dashboard Insights" styleClass="dashboard-insights-card">
+  <p-card header="Dashboard Insights" styleClass="dashboard-insights-card">
+    <!-- Loading state -->
     <div *ngIf="insightsLoading" class="insights-loading">
       <i class="pi pi-spin pi-spinner"></i>
       Generating dashboard insights...
     </div>
 
+    <!-- Error state -->
     <div *ngIf="insightsError" class="insights-error">
       {{ insightsError }}
     </div>
 
-    <ul
-      *ngIf="!insightsLoading && !insightsError && insights.length"
-      class="insights-list"
-    >
-      <li *ngFor="let insight of insights">
-        <i class="pi pi-lightbulb"></i>
-        <span>{{ insight }}</span>
-      </li>
-    </ul>
+    <ng-container *ngIf="!insightsLoading && !insightsError">
+      <!-- Automated Node.js insights -->
+      <div class="automated-insights">
+        <h4>
+          <i class="pi pi-lightbulb"></i>
+          Automated Insights
+        </h4>
 
-    <p *ngIf="!insightsLoading && !insightsError && !insights.length">
-      No dashboard insights available.
-    </p>
+        <ul *ngIf="insights.length; else noInsights" class="insights-list">
+          <li *ngFor="let insight of insights">
+            <i class="pi pi-check-circle"></i>
+            <span>{{ insight }}</span>
+          </li>
+        </ul>
+
+        <ng-template #noInsights>
+          <p>No automated insights available.</p>
+        </ng-template>
+      </div>
+
+      <!-- Ollama AI explanation -->
+      <div class="ai-explanation mt-4">
+        <h4>
+          <i class="pi pi-sparkles"></i>
+          AI-Generated Explanation
+
+          <p-tag
+            [value]="aiEnabled ? 'AI Enabled' : 'AI Unavailable'"
+            [severity]="aiEnabled ? 'success' : 'secondary'"
+          ></p-tag>
+        </h4>
+
+        <p *ngIf="aiExplanation; else aiFallback">
+          {{ aiExplanation }}
+        </p>
+
+        <ng-template #aiFallback>
+          <p class="text-color-secondary">
+            AI explanation is currently unavailable. You can still use the
+            automated insights above.
+          </p>
+        </ng-template>
+      </div>
+    </ng-container>
   </p-card>
 
   <!-- Employee Summary -->

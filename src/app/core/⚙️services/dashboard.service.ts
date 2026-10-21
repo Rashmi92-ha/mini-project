@@ -23,6 +23,8 @@ export interface DashboardStats {
 export interface DashboardInsightsResponse {
   stats: DashboardStats;
   insights: string[];
+  aiExplanation: string | null;
+  aiEnabled: boolean;
 }
 
 @Injectable({
